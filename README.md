@@ -1,0 +1,4 @@
+lolcomp
+=======
+
+LoLCompare alpha
