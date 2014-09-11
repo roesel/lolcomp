@@ -46,6 +46,8 @@ print("\n\n\n");
 /* ---- END of pure sorter, group debug beginning ---- */
 print("Including group.php\n");
 include_once("group.php");
+print("Including player.php\n");
+include_once("player.php");
 print("Creating group object...\n");
 $group = new Group($summoners_sorted_array);
 print("Done.\n")

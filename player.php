@@ -30,8 +30,6 @@ class Player		// test commit
         
         $this->loadRankedStats();
         $this->check(3);
-        
-        
     }
     
     function check($loop) {

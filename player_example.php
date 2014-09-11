@@ -1,5 +1,5 @@
 <?php
-/* takes Name and Region: ?name=Erthainel&region=eune?name=Erthainel&region=eune */
+/* takes Name and Region: ?name=Erthainel&region=eune */
 include_once("player.php");
 
 function remoteFileExists($url) {
