@@ -6,25 +6,14 @@ mb_internal_encoding("UTF-8");
 class Group
 {
     public $ids;
-    public $names;
-    public $region;
-    
-    public $stats;
+    public $regions;
     
     public $status;
     
-    function __construct($name, $region)
+    function __construct($summoners_sorted_array)
     {
-        $name = preg_replace('/\s+/', '', $name);
-        $this->loadPlayer(mb_strtolower($name), $region);
+        $this->loadIds($summoners_sorted_array);
         $this->check(1);
-        
-        $this->loadRankedBasic();
-        $this->check(2);
-        
-        $this->loadRankedStats();
-        $this->check(3);
-        
         
     }
     
@@ -45,13 +34,29 @@ class Group
     }
     
     /*
-      Gets the proper name and ID of a player under a specified name.
+      
     */
-    function loadPlayer($name, $region) {
-        $this->region = $region;
-        // using name given to script - to get player instance
-        $addr = 'http://'.$this->region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$name.'?api_key='.API_KEY;
+    function loadIds($summoners_sorted_array) {
+        foreach ($summoners_sorted_array as $region => $summoner_array) {
+            $comma_separated_summoners = "";
+            foreach ($summoner_array as $summoner_name) {
+                $comma_separated_summoners = $comma_separated_summoners.$summoner_name.", ";
+            }
+            $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$comma_separated_summoners.'?api_key='.API_KEY;
+            $addr = "https://eune.api.pvp.net/api/lol/eune/v1.4/summoner/by-name/Erthainel, Shaterane, Ruzgud?api_key=066bffb1-d336-4ae6-8e66-dd8ce6340f5c";
+            print($addr."\n");
+            
+            $data = $this->getData($addr);
+            print($data);
+            $response = json_decode($data, True);
+            var_dump($response);
+            print("\n");
+
         
+        }
+        
+        
+        /*
         $data = $this->getData($addr);
         
         // !! check for returned status !!
@@ -61,7 +66,7 @@ class Group
         $this->id = $j[strtolower($name)]["id"];
         
         $this->name = $j[strtolower($name)]["name"];
-        
+        */
     }
     
     function loadRankedBasic() {
