@@ -25,9 +25,8 @@ function remoteFileExists($url) {
     return $ret;
 }
 
-
 /* -- Defining constants ---------------------------------------------------- */
-const API_KEY = "API KEY";
+include_once("apikey.secret.php");
 
 /* ---------------------------------------------------------------------------*/
 
