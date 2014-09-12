@@ -57,7 +57,14 @@ class Group
 				$revision_date = $info_array["revisionDate"];
 				$summoner_level = $info_array["summonerLevel"];
 				
-				$player = new Player($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
+                $player_init_array = array(
+                    "region"                => $region,
+                    "id"                    => $id,
+                    "profile_icon_id"       => $profile_icon_id,
+                    "revision_date"         => $revision_date,
+                    "summoner_level"        => $summoner_level,
+                );
+				$player = new Player($player_init_array);
 			}
 			
 			var_dump($this->players);
