@@ -56,35 +56,27 @@ class Player		// test commit
     */
 	
 	function setPlayer($general)
-	{
-		$this->id = $id;
-		$this->region = $region;
-		
+	{	
 		// $stats = array(	"general" 	=> 	array("region", "id", "name", "profile_icon_id", "revision_date", "summoner_level"),
 						// "rank5v5" 	=> 	array("wins", "loses", "kills", "deaths", "assists", "minions", "turrets", "modify_date"),
 						// "clas5v5" 	=> 	array("wins", "kills", "assists", "minions", "turrets", "modify_date"),
 						// "aram" 		=>	array("wins", "kills", "assists", "turrets", "modify_date")
 					  // );
 		
-		$stats  = array(	"general" 	=> 	array(),
-							"rank5v5" 	=>	array(),
-							"clas5v5" 	=> 	array(),
-							"aram" 		=>	array(),
-						);
-
-		foreach ($stats["general"] as $general_name => $general_value)
-		{
-			$general_name = $general_value;
-			$stats["general"][$general_name] = $stats["general"][$general_value];
-		}
-		
+		$this->stats  = array(
+			"general" 	=> 	$general,
+			"rank5v5" 	=>	array(),
+			"clas5v5" 	=> 	array(),
+			"aram" 		=>	array(),
+			);
+		var_dump($this->stats["general"]);
 	}
 	
 	function loadStats()
 	{
 		// get stats by ID - wins,loses,kills,... in a bunch of modes
-		$id = $this->id;
-		$region = $this->region;
+		$id = $this->stats["general"]["id"];
+		$region = $this->stats["general"]["region"];
 
         $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
 		print($addr);
