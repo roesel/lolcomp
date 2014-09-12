@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
 /* takes stats: ?region=eune&id=21631229&name=Shaterane&profile_icon_id=660&revision_date=1410395280000&summoner_level=30 */
-=======
-/* takes Name and Region: ?name=Erthainel&region=eune */
->>>>>>> origin/master
 include_once("player.php");
 
 function remoteFileExists($url) {
