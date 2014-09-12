@@ -1,5 +1,5 @@
 <?php
-/* takes Name and Region: ?name=Erthainel&region=eune?name=Erthainel&region=eune */
+/* takes stats: ?region=eune&id=21631229&name=Shaterane&profile_icon_id=660&revision_date=1410395280000&summoner_level=30 */
 include_once("player.php");
 
 function remoteFileExists($url) {
@@ -30,10 +30,20 @@ include_once("apikey.secret.php");
 
 /* ---------------------------------------------------------------------------*/
 
-if (isset($_GET["region"]) && isset($_GET["name"])){
-    // get name and region
+if (isset($_GET["region"]) && 
+	isset($_GET["id"]) && 
+	isset($_GET["name"]) && 
+	isset($_GET["profile_icon_id"]) && 
+	isset($_GET["revision_date"]) && 
+	isset($_GET["summoner_level"]))
+{
+    // get input parametres
     $region = strtolower($_GET["region"]);
-    $name = $_GET["name"];
+    $id = $_GET["id"];
+	$name = $_GET["name"];
+	$profile_icon_id = $_GET["profile_icon_id"];
+	$revision_date = $_GET["revision_date"];
+	$summoner_level = $_GET["summoner_level"];
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -41,7 +51,7 @@ if (isset($_GET["region"]) && isset($_GET["name"])){
 
 
 try {
-    $p = new Player($name, $region);
+    $p = new Player($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
     
 } catch (Exception $e) {
     print("Object creation failed");

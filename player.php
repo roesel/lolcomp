@@ -8,6 +8,10 @@ class Player		// test commit
     public $id;
     public $name;
     public $region;
+	
+	public $profile_icon_id;
+	public $revision_date;
+	public $summoner_level;
     
     public $rank;
     public $rank_roman;
@@ -15,23 +19,20 @@ class Player		// test commit
     public $league;
     public $tier;
     
-    public $stats;
+    public $stats = array();
     
     public $status;
     
-    function __construct($name, $region)
+    function __construct($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level)
     {
-        $name = preg_replace('/\s+/', '', $name);
-        $this->loadPlayer(mb_strtolower($name), $region);
-        $this->check(1);
+		$this->setPlayer($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
+		$this->loadStats();
+		$this->check(1);
+        // $this->loadRankedBasic();
+        // $this->check(2);
         
-        $this->loadRankedBasic();
-        $this->check(2);
-        
-        $this->loadRankedStats();
-        $this->check(3);
-        
-        
+        // $this->loadRankedStats();
+        // $this->check(3);
     }
     
     function check($loop) {
@@ -53,22 +54,54 @@ class Player		// test commit
     /*
       Gets the proper name and ID of a player under a specified name.
     */
-    function loadPlayer($name, $region) {
-        $this->region = $region;
-        // using name given to script - to get player instance
-        $addr = 'http://'.$this->region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$name.'?api_key='.API_KEY;
-        
-        $data = $this->getData($addr);
-        
-        // !! check for returned status !!
-        $j = json_decode($data, True);
+	
+	function setPlayer($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level)
+	{
+		$this->id = $id;
+		$this->region = $region;
+		
+		// $stats = array(	"general" 	=> 	array("region", "id", "name", "profile_icon_id", "revision_date", "summoner_level"),
+						// "rank5v5" 	=> 	array("wins", "loses", "kills", "deaths", "assists", "minions", "turrets", "modify_date"),
+						// "clas5v5" 	=> 	array("wins", "kills", "assists", "minions", "turrets", "modify_date"),
+						// "aram" 		=>	array("wins", "kills", "assists", "turrets", "modify_date")
+					  // );
+		
+		$stats  = array(	"general" 	=> 	array(),
+							"rank5v5" 	=>	array(),
+							"clas5v5" 	=> 	array(),
+							"aram" 		=>	array()
+						);
 
-        // get ID and proper name
-        $this->id = $j[strtolower($name)]["id"];
-        
-        $this->name = $j[strtolower($name)]["name"];
-        
-    }
+		foreach ($stats["general"] as $general_name => $general_value)
+		{
+			$general_name = $general_value;
+			$stats["general"][$general_name] = $stats["general"][$general_value];
+		}
+		
+	}
+	
+	function loadStats()
+	{
+		// get stats by ID - wins,loses,kills,... in a bunch of modes
+		$id = $this->id;
+		$region = $this->region;
+
+        $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
+		print($addr);
+		print("\n");
+        $data = $this->getData($addr);
+		$j = json_decode($data, True);
+		var_dump($data);
+		var_dump($j);
+		exit();
+		
+		// foreach ($s as $stat_name => $stat_value)
+		// {
+			// statistics["ranked5v5"][$stat_name] = $stat_value;
+		// }
+		
+	}
+	
     
     function loadRankedBasic() {
         // get ranked stats by ID - league, division name, ...
