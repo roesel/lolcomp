@@ -1,12 +1,13 @@
 <?php 
 /* Fix for special characters */
-header('Content-type: text/html; charset=utf-8');
 mb_internal_encoding("UTF-8");
 
 class Group
 {
-    public $ids;
-    public $regions;
+    public $ids = array();
+    public $regions = array();
+	
+	public $players = array();
     
     public $status;
     
@@ -14,7 +15,6 @@ class Group
     {
         $this->loadIds($summoners_sorted_array);
         $this->check(1);
-        
     }
     
     function check($loop) {
@@ -40,92 +40,28 @@ class Group
         foreach ($summoners_sorted_array as $region => $summoner_array) {
             $comma_separated_summoners = "";
             foreach ($summoner_array as $summoner_name) {
-                $comma_separated_summoners = $comma_separated_summoners.$summoner_name.", ";
+                $comma_separated_summoners = $comma_separated_summoners.$summoner_name.",%20";  // Spaces changed to %20 - curl doesn't like spaces
             }
             $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$comma_separated_summoners.'?api_key='.API_KEY;
-            $addr = "https://eune.api.pvp.net/api/lol/eune/v1.4/summoner/by-name/Erthainel, Shaterane, Ruzgud?api_key=066bffb1-d336-4ae6-8e66-dd8ce6340f5c";
-            print($addr."\n");
             
             $data = $this->getData($addr);
-            print($data);
-            $response = json_decode($data, True);
-            var_dump($response);
-            print("\n");
-
-        
-        }
-        
-        
-        /*
-        $data = $this->getData($addr);
-        
-        // !! check for returned status !!
-        $j = json_decode($data, True);
-
-        // get ID and proper name
-        $this->id = $j[strtolower($name)]["id"];
-        
-        $this->name = $j[strtolower($name)]["name"];
-        */
-    }
-    
-    function loadRankedBasic() {
-        // get ranked stats by ID - league, division name, ...
-        $id = $this->id;
-        $addr = 'http://'.$this->region.'.api.pvp.net/api/lol/'.$this->region.'/v2.4/league/by-summoner/'.$id.'?api_key='.API_KEY;
-        
-        $data = $this->getData($addr);
-        
-        $j = json_decode($data, True);
-        
-        $this->league = $j[$id][0]["name"];
-        $this->tier = $j[$id][0]["tier"];
-        $this->rank_roman = 0;
-        $this->lp = 0;
-        
-        foreach($j[$id][0]["entries"] as $num) {
-            if ($num["playerOrTeamId"]==$id){
-                $this->rank_roman = $num["division"];
-                $this->lp = $num["leaguePoints"];
-				$this->rank = $this->r2a($this->rank_roman);
-            }
-        }
-        
-        
-    }
-    
-    function loadRankedStats() {
-        $id = $this->id;
-        
-        // get detailed ranked stats by ID
-        $addr = 'http://'.$this->region.'.api.pvp.net/api/lol/'.$this->region.'/v1.3/stats/by-summoner/'.$id.'/ranked?season=SEASON4&api_key='.API_KEY;
-        
-        $data = $this->getData($addr);
-        
-        $j = json_decode($data, True);
-        
-		foreach ($j["champions"] as $champion) {
-			if ($champion["id"]=="0") {
-				$combined = $champion;
+            
+			$response = json_decode($data, True);
+			
+			foreach ($response as $summoner_name => $info_array) {
+				
+				// $region already properly set
+				$id = $info_array["id"];
+				$name = $info_array["name"];
+				$profile_icon_id = $info_array["profileIconId"];
+				$revision_date = $info_array["revisionDate"];
+				$summoner_level = $info_array["summonerLevel"];
+				
+				$player = new Player($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
 			}
-		}        
-        
-        $s = $combined["stats"];
-        
-        $stats = array();
-        
-        $wins = $s["totalSessionsWon"];
-        $losses = $s["totalSessionsLost"];
-                
-        $wratio = round(100*$wins/($wins+$losses),1);
-        
-        array_push($stats, array("Pentas", $s["totalPentaKills"]));  
-        array_push($stats, array("Win ratio", $wratio." %"));
-        array_push($stats, array("Kills", $s["totalChampionKills"]));
-        array_push($stats, array("Assists", $s["totalAssists"]));   
-        array_push($stats, array("Max Spree", $s["maxLargestKillingSpree"]));
-        
-        $this->stats = $stats;    
+			
+			var_dump($this->players);
+        }
     }
     
     function getData($url) {
@@ -145,16 +81,5 @@ class Group
         
         return $response;
     }
-    
-    function r2a($roman) {
-        switch ($roman) {
-            case "I": return 1;
-            case "II": return 2;
-            case "III": return 3;
-            case "IV": return 4;
-            case "V": return 5;
-            default: return 0;
-        }
-    } 
 }
 ?>

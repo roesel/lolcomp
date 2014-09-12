@@ -25,6 +25,7 @@ class Player		// test commit
     
     function __construct($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level)
     {
+<<<<<<< HEAD
 		$this->setPlayer($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
 		$this->loadStats();
 		$this->check(1);
@@ -33,6 +34,17 @@ class Player		// test commit
         
         // $this->loadRankedStats();
         // $this->check(3);
+=======
+        $name = preg_replace('/\s+/', '', $name);
+        $this->loadPlayer(mb_strtolower($name), $region);
+        $this->check(1);
+        
+        $this->loadRankedBasic();
+        $this->check(2);
+        
+        $this->loadRankedStats();
+        $this->check(3);
+>>>>>>> origin/master
     }
     
     function check($loop) {
