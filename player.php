@@ -60,16 +60,21 @@ class Player		// test commit
 		// $stats = array(	"general" 	=> 	array("region", "id", "name", "profile_icon_id", "revision_date", "summoner_level"),
 						// "rank5v5" 	=> 	array("wins", "loses", "kills", "deaths", "assists", "minions", "turrets", "modify_date"),
 						// "clas5v5" 	=> 	array("wins", "kills", "assists", "minions", "turrets", "modify_date"),
-						// "aram" 		=>	array("wins", "kills", "assists", "turrets", "modify_date")
+						// "aram" 		=>	array("wins", "kills", "assists", "turrets", "modify_date"),
 					  // );
+		// "general" 	=> 	array("region", "id", "name", "profile_icon_id", "revision_date", "summoner_level"),
+		// "clas5v5" 	=> 	array("wins", "kills", "assists", "minions", "turrets", "modify_date"),
+		// $stats["general"] = ("eune",21631229,"Shaterane",660,"1410395280000",30);
+		// $stats["clas5v5"] = (250,3688,3691,60549,584,1409570354000);
 		
 		$this->stats  = array(
 			"general" 	=> 	$general,
-			"rank5v5" 	=>	array(),
-			"clas5v5" 	=> 	array(),
-			"aram" 		=>	array(),
+			// "rank5v5" 	=>	array(),
+			// "clas5v5" 	=> 	array(),
+			// "aram" 		=>	array(),
 			);
-		var_dump($this->stats["general"]);
+
+		// var_dump($this->stats["general"]);
 	}
 	
 	function loadStats()
@@ -79,19 +84,41 @@ class Player		// test commit
 		$region = $this->stats["general"]["region"];
 
         $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
-		print($addr);
-		print("\n");
+
         $data = $this->getData($addr);
 		$j = json_decode($data, True);
 
-		var_dump($j);
+		// var_dump($j);
+		// exit();
+		
+		foreach ($j["playerStatSummaries"] as $element)
+		{
+			foreach ($element as $summary_name => $summary_value)
+			{
+				if ($summary_name == "playerStatSummaryType")
+				{
+					$name = $this->camelToSnakeCase($summary_value);
+					$this->stats[$name] = array();
+				}
+				else if ($summary_name == "aggregatedStats")
+				{
+					foreach ($summary_value as $stat_name => $stat_value)
+					{
+						$stat_name = $this->camelToSnakeCase($stat_name);
+						// array_push($this->stats[$name], array($stat_name, $stat_value));
+						$this->stats[$name][$stat_name] = $stat_value;
+					}
+				}
+				else
+				{
+					$summary_name = $this->camelToSnakeCase($summary_name);
+					// array_push($this->stats[$name], array($summary_name, $summary_value));
+					$this->stats[$name][$summary_name] = $summary_value;
+				}
+			}
+		}
+		var_dump($this->stats);
 		exit();
-		
-		// foreach ($s as $stat_name => $stat_value)
-		// {
-			// statistics["ranked5v5"][$stat_name] = $stat_value;
-		// }
-		
 	}
 	
     
@@ -181,6 +208,13 @@ class Player		// test commit
             case "V": return 5;
             default: return 0;
         }
-    } 
+    }
+	
+	function camelToSnakeCase($camel)
+	{
+		$camel = preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $camel);
+		$snake = strtolower($camel);
+		return $snake;
+	}
 }
 ?>
