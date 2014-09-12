@@ -23,9 +23,9 @@ class Player		// test commit
     
     public $status;
     
-    function __construct($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level)
+    function __construct($general)
     {
-		$this->setPlayer($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
+		$this->setPlayer($general);
 		$this->loadStats();
 		$this->check(1);
         // $this->loadRankedBasic();
@@ -55,7 +55,7 @@ class Player		// test commit
       Gets the proper name and ID of a player under a specified name.
     */
 	
-	function setPlayer($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level)
+	function setPlayer($general)
 	{
 		$this->id = $id;
 		$this->region = $region;
@@ -69,7 +69,7 @@ class Player		// test commit
 		$stats  = array(	"general" 	=> 	array(),
 							"rank5v5" 	=>	array(),
 							"clas5v5" 	=> 	array(),
-							"aram" 		=>	array()
+							"aram" 		=>	array(),
 						);
 
 		foreach ($stats["general"] as $general_name => $general_value)
@@ -91,7 +91,7 @@ class Player		// test commit
 		print("\n");
         $data = $this->getData($addr);
 		$j = json_decode($data, True);
-		var_dump($data);
+
 		var_dump($j);
 		exit();
 		

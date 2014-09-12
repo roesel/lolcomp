@@ -38,12 +38,20 @@ if (isset($_GET["region"]) &&
 	isset($_GET["summoner_level"]))
 {
     // get input parametres
-    $region = strtolower($_GET["region"]);
-    $id = $_GET["id"];
-	$name = $_GET["name"];
-	$profile_icon_id = $_GET["profile_icon_id"];
-	$revision_date = $_GET["revision_date"];
-	$summoner_level = $_GET["summoner_level"];
+	$general = array(
+		"region"=>$_GET["region"], 
+		"id"=>$_GET["id"], 
+		"name"=>$_GET["name"], 
+		"profile_icon_id"=>$_GET["profile_icon_id"], 
+		"revision_date"=>$_GET["revision_date"], 
+		"summoner_level"=>$_GET["summoner_level"],
+		);
+    // $region = strtolower($_GET["region"]);
+    // $id = $_GET["id"];
+	// $name = $_GET["name"];
+	// $profile_icon_id = $_GET["profile_icon_id"];
+	// $revision_date = $_GET["revision_date"];
+	// $summoner_level = $_GET["summoner_level"];
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -51,7 +59,7 @@ if (isset($_GET["region"]) &&
 
 
 try {
-    $p = new Player($region, $id, $name, $profile_icon_id, $revision_date, $summoner_level);
+    $p = new Player($general);
     
 } catch (Exception $e) {
     print("Object creation failed");
