@@ -75,9 +75,32 @@ class Player		// test commit
 		
 		$table = "general";
 		$row = $this->stats["general"];
-		dibi::insert($table, $row)
+		dump($row);
+		$row["nazev_sloupce"] = 543543873;
+		//do $row pridat aktualni_timestamp pod stejnym jmenem jako sloupec: "nazev_sloupce" => 1654354136
+		/*&dibi::insert($table, $row)
 			->on('DUPLICATE KEY UPDATE %a ', $row)
+			->execute();*/
+		//$this->isInDatabaseStats();
+	}
+	
+	function isInDatabaseStats() {
+		$table = "general";
+		$id = 21631229;
+		$region = "eune";
+		$res = dibi::select('*')
+			->from($table)
+			->where('id = %i and region = %s', $id, $region)
+			//->orderBy('id')
 			->execute();
+		$result = $res->fetchAll();
+		//dump($result);
+		$returned_rows = sizeof($result);
+		if ($returned_rows==0) {
+			// vim že v DB ten člověk neni.
+		} else {
+			print($result[0]["nazev_sloupce"]);
+		}
 	}
 	
 	function loadStats()
