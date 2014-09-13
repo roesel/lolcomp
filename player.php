@@ -37,10 +37,9 @@ class Player		// test commit
 	// function to decide whether to call or not, depending on stats, and return stats
 	function getStats()
 	{
-		if (count($this->stats)== 1 )
+		if (!$this->isInDatabaseStats())
 		{
 			$this->loadStats();
-			$this->check(4);
 		}
 		return $this->stats;
 	}
@@ -66,40 +65,84 @@ class Player		// test commit
     */
 	
 	function setGeneral($general)
-	{	
-		$this->stats  = array(
-			"general" 	=> 	$general,
-			);
+	{
+		foreach ($general as $stat_name => $stat_value)
+		{
+			if ($stat_name == "revision_date")
+			{
+				$this->stats["general"][$stat_name] = $this->timeStampToNormal($stat_value/1000);
+			}
+			else
+			{
+				$this->stats["general"][$stat_name] = $stat_value;
+			}
+		}
 
 		//dump($this->stats["general"]);
 		
 		$table = "general";
 		$row = $this->stats["general"];
-		dump($row);
-		$row["nazev_sloupce"] = 543543873;
-		//do $row pridat aktualni_timestamp pod stejnym jmenem jako sloupec: "nazev_sloupce" => 1654354136
-		/*&dibi::insert($table, $row)
-			->on('DUPLICATE KEY UPDATE %a ', $row)
-			->execute();*/
-		//$this->isInDatabaseStats();
+
+		if (!$this->isInDatabaseGeneral())
+		{
+			dibi::insert($table, $row)
+				->on('DUPLICATE KEY UPDATE %a ', $row)
+				->execute();
+		}
+		else
+		{
+			// do nothing
+		}
 	}
-	
-	function isInDatabaseStats() {
+
+	function isInDatabaseGeneral() 
+	{
 		$table = "general";
-		$id = 21631229;
-		$region = "eune";
+		$id = $this->stats["general"]["id"];
+		$region = $this->stats["general"]["region"];
 		$res = dibi::select('*')
 			->from($table)
 			->where('id = %i and region = %s', $id, $region)
 			//->orderBy('id')
 			->execute();
+			
 		$result = $res->fetchAll();
-		//dump($result);
+		// dump($result);
+		
 		$returned_rows = sizeof($result);
-		if ($returned_rows==0) {
-			// vim že v DB ten člověk neni.
-		} else {
-			print($result[0]["nazev_sloupce"]);
+		if ($returned_rows==0) 
+		{
+			return false;
+		} 
+		else 
+		{
+			return true;
+		}
+	}
+	
+	function isInDatabaseStats() 
+	{
+		$table = "general";
+		$id = $this->stats["general"]["id"];
+		$region = $this->stats["general"]["region"];
+		$res = dibi::select('*')
+			->from($table)
+			->where('id = %i and region = %s', $id, $region)
+			//->orderBy('id')
+			->execute();
+		
+		$result = $res->fetchAll();
+		// dump($result);
+		
+		$resu = strtotime($result[0]["date_stats"]);
+
+		if (time() - $resu > MAIN_CACHE_TIME)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
 		}
 	}
 	
@@ -125,6 +168,8 @@ class Player		// test commit
 				{
 					$name = $this->camelToSnakeCase($summary_value);
 					$this->stats[$name] = array();
+					$this->stats[$name]["id"] = $id;
+					$this->stats[$name]["region"] = $region;
 				}
 				else if ($summary_name == "aggregatedStats")
 				{
@@ -135,6 +180,11 @@ class Player		// test commit
 						$this->stats[$name][$stat_name] = $stat_value;
 					}
 				}
+				else if ($summary_name == "modifyDate")
+				{
+					$summary_name = $this->camelToSnakeCase($summary_name);
+					$this->stats[$name][$summary_name] = $this->timeStampToNormal($summary_value/1000); //
+				}
 				else
 				{
 					$summary_name = $this->camelToSnakeCase($summary_name);
@@ -143,10 +193,53 @@ class Player		// test commit
 				}
 			}
 		}
-		//var_dump($this->stats);
-		//exit();
+		$this->stats["general"]['date_stats'] = $this->timeStampToNormal(time());
+		foreach ($this->stats as $stat_name => $stat_value)
+		{
+			if($this->tableExists($stat_name))
+			{
+				dibi::insert($stat_name, $stat_value)
+					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
+					->execute();
+			}
+		}
+		
+		
+		// $table = "general";
+		// $row = $this->stats["general"];
+
+		// dibi::insert($table, $row)
+			// ->on('DUPLICATE KEY UPDATE %a ', $row)
+			// ->execute();
+
+		// var_dump($this->stats);
+		// exit();
 	}
 	
+	function tableExists($tablename, $database = false) 
+	{
+ 
+    if(!$database) {
+        $res = mysql_query("SELECT DATABASE()");
+        $database = mysql_result($res, 0);
+    }
+ 
+    $res = mysql_query("
+        SELECT COUNT(*) AS count
+        FROM information_schema.tables 
+        WHERE table_schema = '$database'
+        AND table_name = '$tablename'
+    ");
+ 
+    return mysql_result($res, 0) == 1;
+	}
+	
+	function timeStampToNormal($time_stamp)
+	{
+		$date_string = "Y-m-d H:i:s";
+		$create_date = date($date_string, $time_stamp);
+		return $create_date;
+	}
     
     function loadRankedBasic() {
         // get ranked stats by ID - league, division name, ...
