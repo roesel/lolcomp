@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Hostiteľ:                     127.0.0.1
+-- Hostitel:                     127.0.0.1
 -- Verze serveru:                5.6.20 - MySQL Community Server (GPL)
 -- OS serveru:                   Win32
--- HeidiSQL Verzia:              8.3.0.4694
+-- HeidiSQL Verze:               8.3.0.4694
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -44,6 +44,19 @@ CREATE TABLE IF NOT EXISTS `general` (
   `date_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Stats date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General';
+
+-- Export dat nebyl vybrán.
+
+
+-- Exportování struktury pro tabulka lolcompare.group
+DROP TABLE IF EXISTS `group`;
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `codename` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Codename',
+  `last_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Last updated',
+  UNIQUE KEY `Index 1` (`region`,`codename`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ROW_FORMAT=COMPACT COMMENT='General';
 
 -- Export dat nebyl vybrán.
 
