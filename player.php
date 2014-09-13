@@ -19,14 +19,13 @@ class Player		// test commit
     public $league;
     public $tier;
     
-    public $stats = array();
+    private $stats = array();
     
     public $status;
     
     function __construct($general)
     {
 		$this->setPlayer($general);
-		$this->loadStats();
 		$this->check(1);
         // $this->loadRankedBasic();
         // $this->check(2);
@@ -34,6 +33,17 @@ class Player		// test commit
         // $this->loadRankedStats();
         // $this->check(3);
     }
+	
+	// function to decide whether to call or not, depending on stats, and return stats
+	function getStats()
+	{
+		if (count($this->stats)== 1 )
+		{
+			$this->loadStats();
+			$this->check(4);
+		}
+		return $this->stats;
+	}
     
     function check($loop) {
         /* 
@@ -57,24 +67,12 @@ class Player		// test commit
 	
 	function setPlayer($general)
 	{	
-		// $stats = array(	"general" 	=> 	array("region", "id", "name", "profile_icon_id", "revision_date", "summoner_level"),
-						// "rank5v5" 	=> 	array("wins", "loses", "kills", "deaths", "assists", "minions", "turrets", "modify_date"),
-						// "clas5v5" 	=> 	array("wins", "kills", "assists", "minions", "turrets", "modify_date"),
-						// "aram" 		=>	array("wins", "kills", "assists", "turrets", "modify_date"),
-					  // );
-		// "general" 	=> 	array("region", "id", "name", "profile_icon_id", "revision_date", "summoner_level"),
-		// "clas5v5" 	=> 	array("wins", "kills", "assists", "minions", "turrets", "modify_date"),
-		// $stats["general"] = ("eune",21631229,"Shaterane",660,"1410395280000",30);
-		// $stats["clas5v5"] = (250,3688,3691,60549,584,1409570354000);
-		
 		$this->stats  = array(
 			"general" 	=> 	$general,
-			// "rank5v5" 	=>	array(),
-			// "clas5v5" 	=> 	array(),
-			// "aram" 		=>	array(),
 			);
 
 		// var_dump($this->stats["general"]);
+		// exit;
 	}
 	
 	function loadStats()

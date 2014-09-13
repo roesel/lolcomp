@@ -31,7 +31,7 @@ $p = new Player($general);
 
 
 // stats
-$stats = $p->stats;
+$stats = $p->getStats();
 
 var_dump($stats);
 /* -------------------------------------------------------------------------- */
