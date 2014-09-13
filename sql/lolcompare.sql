@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `aram_unranked5x5` (
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
   `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
-  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date'
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Aram unranked 5v5';
 
 -- Export dat nebyl vybrán.
@@ -74,7 +75,8 @@ CREATE TABLE IF NOT EXISTS `ranked_solo5x5` (
   `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
   `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
-  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date'
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Solo ranked 5v5';
 
 -- Export dat nebyl vybrán.
@@ -92,7 +94,8 @@ CREATE TABLE IF NOT EXISTS `unranked` (
   `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
   `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
-  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date'
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Unranked';
 
 -- Export dat nebyl vybrán.
