@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `group` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
   `codename` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Codename',
-  `last_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Last updated',
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last updated',
   UNIQUE KEY `Index 1` (`region`,`codename`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ROW_FORMAT=COMPACT COMMENT='General';
 
