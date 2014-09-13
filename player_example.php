@@ -5,6 +5,17 @@ include_once("player.php");
 /* -- Defining constants ---------------------------------------------------- */
 include_once("apikey.secret.php");
 
+/* -- Eanbling Tracy Debugger   --------------------------------------------- */
+require('tracy/tracy.php');
+use Tracy\Debugger;
+Debugger::enable();
+
+/* -- DB init  -------------------------------------------------------------- */
+include_once("dibi.min.php");
+include_once("db.secret.php");
+dibi::connect($mysql_credentials);
+unset($mysql_credentials);
+
 /* ---------------------------------------------------------------------------*/
 
 if (isset($_GET["region"]) && 
@@ -33,5 +44,5 @@ $p = new Player($general);
 // stats
 $stats = $p->getStats();
 
-var_dump($stats);
+//dump($stats);
 /* -------------------------------------------------------------------------- */

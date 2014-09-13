@@ -71,7 +71,7 @@ class Player		// test commit
 			"general" 	=> 	$general,
 			);
 
-		// var_dump($this->stats["general"]);
+		dump($this->stats["general"]);
 		// exit;
 	}
 	
