@@ -2,6 +2,10 @@
 /* -- Including objects for esting ------------------------------------------ */
 include_once("player.php");
 
+require('tracy/tracy.php');
+use Tracy\Debugger;
+Debugger::enable();
+
 /* -- Defining constants ---------------------------------------------------- */
 include_once("apikey.secret.php");
 
@@ -107,4 +111,5 @@ if ($returned_rows>0) {
 }
 
 /* ---------------------------------------------------------------------------*/
+dump($general);
 ?>
