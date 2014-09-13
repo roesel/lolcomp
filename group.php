@@ -4,39 +4,40 @@ mb_internal_encoding("UTF-8");
 
 class Group
 {
-    public $ids = array();
-    public $regions = array();
-	
-	public $players = array();
+    // Pole objektů Player naplněné hráči
+    $players = array();
     
     public $status;
     
     function __construct($summoners_sorted_array)
     {
-        $this->loadIds($summoners_sorted_array);
-        $this->check(1);
+        $missing_players = $this->whoIsNotCached();
+        
+        $filled_missing_players = $this->loadFromAPI($missing_players);
+        
+        //check in db for every player
+        //load ONLY unavailable players from API
+        // --- db should be chill now
+        //select * from db
+        //call player objects
+        
+        
     }
     
-    function check($loop) {
-        /* 
-          404 - not found
-          429 - too many requests
-        */
-        $status = $this->status;
-        if ($status==404 && isset($this->id)){
-            $status=404;
-        }
-        switch ($status) {
-            case 404: throw new Exception($status); break;
-            case 429: throw new Exception($status); break;
-            case 4041: throw new Exception($status); break;
-        }
+    function whoIsNotCached($summoners_sorted_array) {
+        //check every player in DB if he is there
+        //return only those who are not in sorted array
+        // TODO
+        return $summoners_sorted_array;
     }
+    
     
     /*
       
     */
-    function loadIds($summoners_sorted_array) {
+    function loadFromAPI($summoners_sorted_array) {
+        $players = array();
+        
         foreach ($summoners_sorted_array as $region => $summoner_array) {
             $comma_separated_summoners = "";
             foreach ($summoner_array as $summoner_name) {
@@ -65,11 +66,44 @@ class Group
                     "summoner_level"        => $summoner_level,
                 );
 				$player = new Player($player_init_array);
+                
+                array_push($players, $player);
 			}
-			
-			var_dump($this->players);
+		}
+
+        return $players;
+    }
+    
+    function saveIdsToDatabase($players_array) {
+        if (!dibi::isConnected()) {
+            print("Dibi is not connected. Exiting.");
+            exit();
+        }
+        
+        foreach ($players_array as $player) {
+            dibi::insert('group', $player)
+                ->on('DUPLICATE KEY UPDATE %a ', $player)    
+                ->execute();
         }
     }
+    
+    function check($loop) {
+        /* 
+          404 - not found
+          429 - too many requests
+        */
+        $status = $this->status;
+        if ($status==404 && isset($this->id)){
+            $status=404;
+        }
+        switch ($status) {
+            case 404: throw new Exception($status); break;
+            case 429: throw new Exception($status); break;
+            case 4041: throw new Exception($status); break;
+        }
+    }
+    
+    
     
     function getData($url) {
         
