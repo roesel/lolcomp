@@ -49,6 +49,20 @@ CREATE TABLE IF NOT EXISTS `unranked` (
   `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Unranked';
 
+-- Exportování struktury pro tabulka lolcompare.players_aram5v5
+DROP TABLE IF EXISTS `aram_unranked5x5`;
+CREATE TABLE IF NOT EXISTS `aram_unranked5x5` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp kdy byl vytvořen daný záznam.',
+  -- odsud dál specificky
+  `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
+  `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
+  `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Aram unranked 5v5';
+
 
 -- Export dat nebyl vybrán.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

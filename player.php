@@ -25,7 +25,7 @@ class Player		// test commit
     
     function __construct($general)
     {
-		$this->setPlayer($general);
+		$this->setGeneral($general);
 		$this->check(1);
         // $this->loadRankedBasic();
         // $this->check(2);
@@ -65,7 +65,7 @@ class Player		// test commit
       Gets the proper name and ID of a player under a specified name.
     */
 	
-	function setPlayer($general)
+	function setGeneral($general)
 	{	
 		$this->stats  = array(
 			"general" 	=> 	$general,
