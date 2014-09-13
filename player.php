@@ -71,8 +71,13 @@ class Player		// test commit
 			"general" 	=> 	$general,
 			);
 
-		dump($this->stats["general"]);
-		// exit;
+		//dump($this->stats["general"]);
+		
+		$table = "general";
+		$row = $this->stats["general"];
+		dibi::insert($table, $row)
+			->on('DUPLICATE KEY UPDATE %a ', $row)
+			->execute();
 	}
 	
 	function loadStats()
