@@ -27,6 +27,8 @@ class Player		// test commit
     {
 		$this->setGeneral($general);
 		$this->check(1);
+		$this->getStats();
+		$this->check(2);
         // $this->loadRankedBasic();
         // $this->check(2);
         
