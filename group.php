@@ -66,10 +66,12 @@ class Group
 				->execute();
 			$result = $main_select->fetchAll();
 			$diff = $result[0]["diff"];
-			print($diff);
-		} else {
-			return False;
-		}
+			
+			if ($diff<MAIN_CACHE_TIME) {
+				return True;
+			}
+		} 
+		return False;
 	}
     
     function loadFromAPI($summoners_sorted_array) {
