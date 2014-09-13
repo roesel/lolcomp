@@ -5,36 +5,73 @@ mb_internal_encoding("UTF-8");
 class Group
 {
     // Pole objektů Player naplněné hráči
-    $players = array();
+    public $players = array();
     
     public $status;
     
-    function __construct($summoners_sorted_array)
-    {
-        $missing_players = $this->whoIsNotCached();
-        
-        $filled_missing_players = $this->loadFromAPI($missing_players);
-        
-        //check in db for every player
-        //load ONLY unavailable players from API
-        // --- db should be chill now
-        //select * from db
-        //call player objects
-        
-        
+    function __construct($string_input) {
+        $missing_players = $this->smartParse($string_input);
+		$this->loadFromAPI($missing_players);
+		
     }
+	
+	function smartParse($string_input) {
+		// Strip spaces (API ignores them anyway)
+		$input = str_replace(' ', '', $string_input);   // remove spaces
+
+		// Explode by line-ends (every line = one summoner)
+		$summoners_array = explode("\n", $input);
+		
+		// Empty array for sorted summoners
+		$summoners_sorted_array = array();
+		
+		// Cycle that will go through all summoners and sort them into their regions
+		foreach ($summoners_array as $summoner_and_region) {  // For each summoner
+			$explode = explode(",", $summoner_and_region);  // Explode by "," (separate summoner and region)
+			
+			// Properly name variables for future use
+			$summoner = strtolower(preg_replace('/\s+/', '', $explode[0])); // remove all whitespace characters and convert to lowercase
+			$region = $explode[1];
+			
+			// If the player doesn't exist in the database (and data is fresh!)
+			if (!$this->isInDatabase($summoner, $region)) {
+				// If that region does not exist yet, create it
+				if(!isset($summoners_sorted_array[$region])) {
+					$summoners_sorted_array[$region] = array();
+				} 
+				
+				// Push into region (has to exist due to previous if)
+				array_push($summoners_sorted_array[$region], $summoner);
+			}
+		}
+		return $summoners_sorted_array;
+	}
+	
+	function isInDatabase($codename, $region) {
+		$table = "group";
+		$res = dibi::select('count(*)')
+			->as('count')
+			->from($table)
+			->where('codename = %s and region = %s', $codename, $region)
+			->execute();
+		$result = $res->fetchAll();
+		$row_exists = $result[0]["count"];
+		
+		if ($row_exists) {
+			$inner_select = dibi::select('last_updated')
+				->from($table)
+				->where('codename = %s and region = %s', $codename, $region);
+			$main_select = dibi::select('time_to_sec(timediff(current_timestamp, ('.$inner_select.') ))')
+				->as('diff')
+				->execute();
+			$result = $main_select->fetchAll();
+			$diff = $result[0]["diff"];
+			print($diff);
+		} else {
+			return False;
+		}
+	}
     
-    function whoIsNotCached($summoners_sorted_array) {
-        //check every player in DB if he is there
-        //return only those who are not in sorted array
-        // TODO
-        return $summoners_sorted_array;
-    }
-    
-    
-    /*
-      
-    */
     function loadFromAPI($summoners_sorted_array) {
         $players = array();
         
@@ -51,6 +88,8 @@ class Group
 			
 			foreach ($response as $summoner_name => $info_array) {
 				
+				
+				
 				// $region already properly set
 				$id = $info_array["id"];
 				$name = $info_array["name"];
@@ -58,8 +97,11 @@ class Group
 				$revision_date = $info_array["revisionDate"];
 				$summoner_level = $info_array["summonerLevel"];
 				
+				$this->insertIntoDatabase($id, $name, $region);
+				
                 $player_init_array = array(
-                    "region"                => $region,
+                    "name"					=> $name,
+					"region"                => $region,
                     "id"                    => $id,
                     "profile_icon_id"       => $profile_icon_id,
                     "revision_date"         => $revision_date,
@@ -73,37 +115,21 @@ class Group
 
         return $players;
     }
-    
-    function saveIdsToDatabase($players_array) {
-        if (!dibi::isConnected()) {
-            print("Dibi is not connected. Exiting.");
-            exit();
-        }
-        
-        foreach ($players_array as $player) {
-            dibi::insert('group', $player)
-                ->on('DUPLICATE KEY UPDATE %a ', $player)    
-                ->execute();
-        }
-    }
-    
-    function check($loop) {
-        /* 
-          404 - not found
-          429 - too many requests
-        */
-        $status = $this->status;
-        if ($status==404 && isset($this->id)){
-            $status=404;
-        }
-        switch ($status) {
-            case 404: throw new Exception($status); break;
-            case 429: throw new Exception($status); break;
-            case 4041: throw new Exception($status); break;
-        }
-    }
-    
-    
+	
+	function insertIntoDatabase($id, $name, $region) {
+		$codename = strtolower(preg_replace('/\s+/', '', $name));
+		
+		$row = array(
+			"codename" => $codename,
+			"id"       => $id,
+			"region"   => $region,
+		);
+		
+		$table = "group";
+		dibi::insert($table, $row)
+			->on('DUPLICATE KEY UPDATE %a ', $row)
+			->execute();
+	}
     
     function getData($url) {
         

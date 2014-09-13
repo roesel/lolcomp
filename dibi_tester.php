@@ -1,14 +1,5 @@
 <?php
-/* -- Including objects for esting ------------------------------------------ */
-include_once("player.php");
-
-require('tracy/tracy.php');
-use Tracy\Debugger;
-Debugger::enable();
-
-/* -- Defining constants ---------------------------------------------------- */
-include_once("apikey.secret.php");
-
+require('__init.php');
 /* ---------------------------------------------------------------------------*/
 
 // set input parametres
