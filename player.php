@@ -117,8 +117,8 @@ class Player		// test commit
 				}
 			}
 		}
-		var_dump($this->stats);
-		exit();
+		//var_dump($this->stats);
+		//exit();
 	}
 	
     
