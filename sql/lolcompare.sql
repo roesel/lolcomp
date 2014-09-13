@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `general` (
   `profile_icon_id` int(255) NOT NULL DEFAULT '0' COMMENT 'Profile icon',
   `summoner_level` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner level',
   `revision_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Revision date',
+  `date_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Stats date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General';
 
