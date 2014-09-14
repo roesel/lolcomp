@@ -24,9 +24,6 @@ Shaterane, eune</textarea>
 		
 		$input = $_POST["players"];
 		
-		include_once("group.php");
-		include_once("player.php");
-		
 		$group = new Group($input);
 		
 		print('<div id="print" style="float:left;width:700px;">');
