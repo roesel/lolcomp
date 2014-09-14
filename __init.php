@@ -11,6 +11,9 @@ mb_internal_encoding("UTF-8");
 /* -- Including objects for testing ----------------------------------------- */
 include_once("player.php");
 
+/* -- Including objects for testing ----------------------------------------- */
+include_once("group.php");
+
 /* -- Including printer of tables ------------------------------------------- */
 include_once("printer.php");
 

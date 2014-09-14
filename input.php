@@ -23,30 +23,17 @@ Shaterane, eune</textarea>
 		require('__init.php');
 		
 		$input = $_POST["players"];
-		
 		$group = new Group($input);
 		
 		print('<div id="print" style="float:left;width:700px;">');
 		/* ----------------------------------- */
 		$table = $_POST["table"];
-		$existing_players = $group->getExistingPlayers();
 		
-		$res = dibi::select('*')
-			->from($table)
-			->where('( id, region) ')
-			->in($existing_players)
-			->execute();
-		$result = $res->fetchAll();
+		$header = Info::createTableHeader($table);
+		$body = Info::createTableBody($table,$group);
 		
-		$comments = array();
-		$res = dibi::select('COLUMN_COMMENT')
-			->from('information_schema.COLUMNS')
-			->where('TABLE_NAME = %s', $table)
-			->execute();
-		$comments = $res->fetchAll();
-
 		$printer = new Printer();
-		$printer->printTable($comments, $result);
+		$printer->printTable($header, $body);
 		
 		/* ----------------------------------- */
 		print('</div>');
