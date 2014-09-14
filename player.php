@@ -198,24 +198,13 @@ class Player		// test commit
 		$this->stats["general"]['date_stats'] = $this->timeStampToNormal(time());
 		foreach ($this->stats as $stat_name => $stat_value)
 		{
-			if($this->tableExists($stat_name))
+			if($this->tableExists('stats_'.$stat_name))
 			{
-				dibi::insert($stat_name, $stat_value)
+				dibi::insert('stats_'.$stat_name, $stat_value)
 					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
 					->execute();
 			}
 		}
-		
-		
-		// $table = "general";
-		// $row = $this->stats["general"];
-
-		// dibi::insert($table, $row)
-			// ->on('DUPLICATE KEY UPDATE %a ', $row)
-			// ->execute();
-
-		// var_dump($this->stats);
-		// exit();
 	}
 	
 	function tableExists($tablename, $database = false) 

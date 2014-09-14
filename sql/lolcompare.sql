@@ -17,11 +17,10 @@ USE `lolcompare`;
 
 
 -- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
-DROP TABLE IF EXISTS `aram_unranked5x5`;
-CREATE TABLE IF NOT EXISTS `aram_unranked5x5` (
+DROP TABLE IF EXISTS `stats_aram_unranked5x5`;
+CREATE TABLE IF NOT EXISTS `stats_aram_unranked5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
-  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp kdy byl vytvořen daný záznam.',
   `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
   `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
@@ -63,11 +62,10 @@ CREATE TABLE IF NOT EXISTS `group` (
 
 
 -- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
-DROP TABLE IF EXISTS `ranked_solo5x5`;
-CREATE TABLE IF NOT EXISTS `ranked_solo5x5` (
+DROP TABLE IF EXISTS `stats_ranked_solo5x5`;
+CREATE TABLE IF NOT EXISTS `stats_ranked_solo5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
-  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp kdy byl vytvořen daný záznam.',
   `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
   `losses` int(255) NOT NULL DEFAULT '0' COMMENT 'Losses',
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
@@ -83,11 +81,10 @@ CREATE TABLE IF NOT EXISTS `ranked_solo5x5` (
 
 
 -- Exportování struktury pro tabulka lolcompare.unranked
-DROP TABLE IF EXISTS `unranked`;
-CREATE TABLE IF NOT EXISTS `unranked` (
+DROP TABLE IF EXISTS `stats_unranked`;
+CREATE TABLE IF NOT EXISTS `stats_unranked` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
-  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp kdy byl vytvořen daný záznam.',
   `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
   `total_minion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Minion kills',
