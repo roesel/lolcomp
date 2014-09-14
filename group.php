@@ -56,8 +56,8 @@ class Group
 			->from($table)
 			->where('codename = %s and region = %s', $codename, $region)
 			->execute();
-		$result = $res->fetchAll();
-		$row_exists = count($result);
+		$result_1 = $res->fetchAll();
+		$row_exists = count($result_1);
 
 		if ($row_exists) {
 			$inner_select = dibi::select('last_updated')
@@ -70,7 +70,7 @@ class Group
 			$diff = $result[0]["diff"];
 			
 			if ($diff<MAIN_CACHE_TIME) {
-				$id = $result[0]["id"];
+				$id = $result_1[0]["id"];
 				$this->addIdRegion($id, $region);	// adds id and region of existing player into array existing_players
 				return True;
 			}
@@ -160,12 +160,12 @@ class Group
 	
 	function getErrors()					// print array errors
 	{
-		dump($this->errors);
+		return $this->errors;
 	}
 	
 	function getExistingPlayers()			// print array existing_players
 	{
-		dump($this->existing_players);
+		return $this->existing_players;
 	}
 	
 	function addIdRegion($id, $region)		// adds id and region of players into array existing_players
