@@ -29,5 +29,5 @@ $p = new Player($general);
 // stats
 $stats = $p->getStats();
 
-// dump($stats);
+dump($stats);
 /* -------------------------------------------------------------------------- */
