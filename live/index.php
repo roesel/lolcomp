@@ -1,6 +1,10 @@
 <?php require('../__init.php'); ?>
 
 <html>
+<head>
+	<title>LoLCompare version rofl</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body style="width:1700px;text-align:left;margin-left:auto;margin-right:auto;">
 
 <div id="form" style="float:left;width:300px;margin-left:150px;">
@@ -30,7 +34,7 @@ Shaterane, eune</textarea>
 		$group = new Group($input);
 		
 		print('<div id="print" style="float:left;width:700px;">');
-		/* ----------------------------------- */
+		
 		$table = $_POST["table"];
 		
 		$header = Info::createTableHeader($table);
@@ -39,7 +43,6 @@ Shaterane, eune</textarea>
 		$printer = new Printer();
 		$printer->printTable($header, $body);
 		
-		/* ----------------------------------- */
 		print('</div>');
 	} 
 ?>

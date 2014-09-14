@@ -16,8 +16,8 @@ class Printer
 	
 	static function printTable($head,$table)
 	{
-		print("<table style=\"width:100%\">");
-		print("<tr>");
+		print('<table style=\"width:100%\" id="box-table-a">');
+		print('<tr>');
 		foreach ($head as $column => $names)		//header
 		{
 			foreach ($names as $name => $value)
