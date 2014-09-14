@@ -206,6 +206,59 @@ CREATE TABLE IF NOT EXISTS `stats_ranked_solo5x5` (
 
 -- Export dat nebyl vybrán.
 
+-- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+DROP TABLE IF EXISTS `stats_ranked_team3x3`;
+CREATE TABLE IF NOT EXISTS `stats_ranked_team3x3` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  `losses` int(255) NOT NULL DEFAULT '0' COMMENT 'Losses',
+  `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
+  `total_minion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Minion kills',
+  `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
+  `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
+  `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Team ranked 3v3';
+
+-- Export dat nebyl vybrán.
+
+-- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+DROP TABLE IF EXISTS `stats_ranked_team5x5`;
+CREATE TABLE IF NOT EXISTS `stats_ranked_team5x5` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  `losses` int(255) NOT NULL DEFAULT '0' COMMENT 'Losses',
+  `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
+  `total_minion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Minion kills',
+  `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
+  `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
+  `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Team ranked 5v5';
+
+-- Export dat nebyl vybrán.
+
+-- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+DROP TABLE IF EXISTS `stats_summoners_rift6x6`;
+CREATE TABLE IF NOT EXISTS `stats_summoners_rift6x6` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
+  `total_minion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Minion kills',
+  `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
+  `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
+  `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Summoners rift 6v6';
+
+-- Export dat nebyl vybrán.
+
 -- Exportování struktury pro tabulka lolcompare.unranked
 DROP TABLE IF EXISTS `stats_unranked`;
 CREATE TABLE IF NOT EXISTS `stats_unranked` (

@@ -204,6 +204,11 @@ class Player		// test commit
 					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
 					->execute();
 			}
+			else
+			{
+				// print($stat_name."\n");
+				// dump($stat_value);
+			}
 		}
 	}
 	
