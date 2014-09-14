@@ -15,8 +15,6 @@ class Group
     function __construct($string_input) {
         $missing_players = $this->smartParse($string_input);
 		$this->loadFromAPI($missing_players);
-		$this->getErrors();
-		$this->getExistingPlayers();
     }
 	
 	function smartParse($string_input) {
