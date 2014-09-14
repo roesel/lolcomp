@@ -18,7 +18,8 @@ class Group
 	function smartParse($string_input) {
 		// Strip spaces (API ignores them anyway)
 		$input = str_replace(' ', '', $string_input);   // remove spaces
-
+		$input = str_replace("\r\n", "\n", $input);
+	    
 		// Explode by line-ends (every line = one summoner)
 		$summoners_array = explode("\n", $input);
 		
