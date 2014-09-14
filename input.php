@@ -36,6 +36,11 @@ Shaterane, eune</textarea>
 		$result = $res->fetchAll();
 		
 		dump($result);
+		/*
+		$printer = new Printer();
+		$printer->printTable($result);
+		*/
+		
 		/* ----------------------------------- */
 		print('</div>');
 	} 
