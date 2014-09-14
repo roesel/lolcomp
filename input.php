@@ -1,3 +1,5 @@
+<?php require('__init.php'); ?>
+
 <html>
 <body style="width:1700px;text-align:left;margin-left:auto;margin-right:auto;">
 
@@ -12,15 +14,17 @@ Shaterane, eune</textarea>
 	<br/>
 	Table:
 	<select name="table">
-		<option value="stats_unranked" selected="selected">stats_unranked</option>
-		<option value="stats_ascension" >stats_ascension</option>
+		<?php 
+			Printer::printAvailableTables(
+				Info::getAvailableTables()
+			); 
+		?>
 	</select>
 	<br/><input type="submit">
 	</form>
 </div>
 <?php
 	if (isset($_POST["players"]) && isset($_POST["table"])) {
-		require('__init.php');
 		
 		$input = $_POST["players"];
 		$group = new Group($input);
