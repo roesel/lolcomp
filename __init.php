@@ -8,17 +8,11 @@
 header('Content-type: text/html; charset=utf-8');
 mb_internal_encoding("UTF-8");
 
-/* -- Including objects for testing ----------------------------------------- */
-include_once("player.php");
-
-/* -- Including objects for testing ----------------------------------------- */
-include_once("group.php");
-
-/* -- Including printer of tables ------------------------------------------- */
-include_once("printer.php");
-
-/* -- Including info object ------------------------------------------------- */
-include_once("info.php");
+/* -- Including classes ----------------------------------------------------- */
+include_once("class/player.class.php");
+include_once("class/group.class.php");
+include_once("class/printer.class.php");
+include_once("class/info.class.php");
 
 /* -- Enabling Tracy Debugger ----------------------------------------------- */
 require('lib/tracy/tracy.php');

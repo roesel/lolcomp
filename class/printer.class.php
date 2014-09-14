@@ -8,7 +8,13 @@ class Printer
 
     }
 	
-	function printTable($head,$table)
+	static function printAvailableTables($available_tables) {
+		foreach ($available_tables as $table) {
+			printf('<option value="%s" >%s</option>', $table['table_name'], $table['table_comment']);
+		}
+	}
+	
+	static function printTable($head,$table)
 	{
 		print("<table style=\"width:100%\">");
 		print("<tr>");

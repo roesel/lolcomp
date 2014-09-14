@@ -7,12 +7,15 @@ class Info
 
     }
 	
-	function getAvailableTables()
+	static function getAvailableTables()
 	{
-		print(dibi::select('table_name, table_comment')
+		$result = dibi::select('table_name, table_comment')
 			->from('information_schema.tables')
-			->where('table_schema = %s and table_name like stats\_%')
-			);//->execute();
+			->where('table_schema = %s and table_name', 'lolcompare')
+			->like('%s', 'stats\_%')
+			->execute();
+		$result = $result->fetchAll();
+		return $result;
 	}
 	
 	static function createTableHeader($table)
