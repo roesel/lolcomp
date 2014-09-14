@@ -1,10 +1,10 @@
-<?php require('__init.php'); ?>
+<?php require('../__init.php'); ?>
 
 <html>
 <body style="width:1700px;text-align:left;margin-left:auto;margin-right:auto;">
 
 <div id="form" style="float:left;width:300px;margin-left:150px;">
-	<form action="input.php" method="post">
+	<form action="./" method="post">
 	LoLCompare, version <strike>0.001</strike> rofl <br/>
 	<textarea name="players" rows="20" cols="30">
 Erthainel, eune
