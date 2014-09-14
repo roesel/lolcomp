@@ -90,8 +90,6 @@ class Group
 			
 			foreach ($response as $summoner_name => $info_array) {
 				
-				
-				
 				// $region already properly set
 				$id = $info_array["id"];
 				$name = $info_array["name"];
@@ -122,9 +120,10 @@ class Group
 		$codename = strtolower(preg_replace('/\s+/', '', $name));
 		
 		$row = array(
-			"codename" => $codename,
-			"id"       => $id,
-			"region"   => $region,
+			"codename" 		=> $codename,
+			"id"       		=> $id,
+			"region"  	 	=> $region,
+			"last_updated" 	=> NULL,
 		);
 		
 		$table = "group";
