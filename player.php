@@ -204,6 +204,12 @@ class Player		// test commit
 					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
 					->execute();
 			}
+			else if($this->tableExists($stat_name))
+			{
+				dibi::insert($stat_name, $stat_value)
+					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
+					->execute();
+			}
 			else
 			{
 				// print($stat_name."\n");
