@@ -10,7 +10,7 @@ include_once("player.php");
 print("Creating group object...\n");
 
 // Input is what we get from the user/form
-$input = "Erthainel, eune\nRuzgud, eune\nTSM Bjergsen, na\nShaterane, eune\nTorrda";
+$input = "Erthainel, eune\nRuuzgud, eune\nTSMBjergsen, na\nRaazhud, na";
 
 $group = new Group($input);
 print("Done.\n")

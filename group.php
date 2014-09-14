@@ -6,6 +6,7 @@ class Group
 {
     // Pole objektů Player naplněné hráči
     public $players = array();
+	private $errors = array();
     
     public $status;
     
@@ -77,9 +78,11 @@ class Group
     
     function loadFromAPI($summoners_sorted_array) {
         $players = array();
+		$responded_names = array();
         
         foreach ($summoners_sorted_array as $region => $summoner_array) {
             $comma_separated_summoners = "";
+
             foreach ($summoner_array as $summoner_name) {
                 $comma_separated_summoners = $comma_separated_summoners.$summoner_name.",%20";  // Spaces changed to %20 - curl doesn't like spaces
             }
@@ -88,7 +91,7 @@ class Group
             $data = $this->getData($addr);
             
 			$response = json_decode($data, True);
-			
+
 			foreach ($response as $summoner_name => $info_array) {
 				
 				// $region already properly set
@@ -111,9 +114,10 @@ class Group
 				$player = new Player($player_init_array);
                 
                 array_push($players, $player);
+				array_push($responded_names, $summoner_name);
 			}
+			$this->errors[$region] = array_diff($summoner_array, $responded_names);
 		}
-
         return $players;
     }
 	
@@ -150,5 +154,10 @@ class Group
         
         return $response;
     }
+	
+	function getError()
+	{
+		dump($this->errors);
+	}
 }
 ?>
