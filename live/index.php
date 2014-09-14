@@ -21,7 +21,7 @@ Shaterane, eune</textarea>
 		<?php 
 			Printer::printAvailableTables(
 				Info::getAvailableTables()
-			); 
+			);
 		?>
 	</select>
 	<br/><input type="submit">
@@ -31,17 +31,16 @@ Shaterane, eune</textarea>
 	if (isset($_POST["players"]) && isset($_POST["table"])) {
 		
 		$input = $_POST["players"];
+		$table = $_POST["table"];
+
 		$group = new Group($input);
 		
 		print('<div id="print" style="float:left;width:700px;">');
 		
-		$table = $_POST["table"];
-		
 		$header = Info::createTableHeader($table);
 		$body = Info::createTableBody($table,$group);
 		
-		$printer = new Printer();
-		$printer->printTable($header, $body);
+		Printer::printTable($header, $body);
 		
 		print('</div>');
 	} 

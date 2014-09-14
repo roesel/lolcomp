@@ -8,9 +8,18 @@ class Printer
 
     }
 	
-	static function printAvailableTables($available_tables) {
-		foreach ($available_tables as $table) {
-			printf('<option value="%s" >%s</option>', $table['table_name'], $table['table_comment']);
+	static function printAvailableTables($available_tables) 
+	{
+		foreach ($available_tables as $table)
+		{
+			if ($_POST['table'] == $table['table_name'])
+			{
+				printf('<option value="%s" selected = "selected">%s</option>', $table['table_name'], $table['table_comment']);
+			}
+			else
+			{
+				printf('<option value="%s" >%s</option>', $table['table_name'], $table['table_comment']);
+			}
 		}
 	}
 	
