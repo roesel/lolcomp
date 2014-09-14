@@ -6,14 +6,17 @@ class Group
 {
     // Pole objektů Player naplněné hráči
     public $players = array();
+	
 	private $errors = array();
+	private $existing_players = array();
     
     public $status;
     
     function __construct($string_input) {
         $missing_players = $this->smartParse($string_input);
 		$this->loadFromAPI($missing_players);
-		
+		$this->getErrors();
+		$this->getExistingPlayers();
     }
 	
 	function smartParse($string_input) {
@@ -51,14 +54,13 @@ class Group
 	
 	function isInDatabase($codename, $region) {
 		$table = "group";
-		$res = dibi::select('count(*)')
-			->as('count')
+		$res = dibi::select('id')
 			->from($table)
 			->where('codename = %s and region = %s', $codename, $region)
 			->execute();
 		$result = $res->fetchAll();
-		$row_exists = $result[0]["count"];
-		
+		$row_exists = count($result);
+
 		if ($row_exists) {
 			$inner_select = dibi::select('last_updated')
 				->from($table)
@@ -70,6 +72,8 @@ class Group
 			$diff = $result[0]["diff"];
 			
 			if ($diff<MAIN_CACHE_TIME) {
+				$id = $result[0]["id"];
+				$this->addIdRegion($id, $region);	// adds id and region of existing player into array existing_players
 				return True;
 			}
 		} 
@@ -112,6 +116,7 @@ class Group
                     "summoner_level"        => $summoner_level,
                 );
 				$player = new Player($player_init_array);
+				$this->addIdRegion($id, $region);		// adds id and region of created player into array existing_players
                 
                 array_push($players, $player);
 				array_push($responded_names, $summoner_name);
@@ -155,9 +160,19 @@ class Group
         return $response;
     }
 	
-	function getError()
+	function getErrors()					// print array errors
 	{
 		dump($this->errors);
+	}
+	
+	function getExistingPlayers()			// print array existing_players
+	{
+		dump($this->existing_players);
+	}
+	
+	function addIdRegion($id, $region)		// adds id and region of players into array existing_players
+	{
+		array_push($this->existing_players, array('(%i, %s)', $id, $region));
 	}
 }
 ?>
