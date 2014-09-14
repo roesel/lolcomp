@@ -1,7 +1,4 @@
 <?php 
-/* Fix for special characters */
-header('Content-type: text/html; charset=utf-8');
-mb_internal_encoding("UTF-8");
 
 class Printer
 {
@@ -11,17 +8,27 @@ class Printer
 
     }
 	
-	function printTable($table)
+	function printTable($head,$table)
 	{
-		print("<table style=\"width:100%\">\n");
-		foreach ($table as $row => $names)
+		print("<table style=\"width:100%\">");
+		print("<tr>");
+		foreach ($head as $column => $names)		//header
 		{
-			print("\t<tr\n>");
 			foreach ($names as $name => $value)
 			{
-				print("\t\t<td>".$value."</td>\n");
+				print("<th>".$value."</th>");
 			}
-			print("\t</tr\n>");
+		}
+		print("</tr>");
+		
+		foreach ($table as $row => $names)			//body
+		{
+			print("<tr>");
+			foreach ($names as $name => $value)
+			{
+				print("<td>".$value."</td>");
+			}
+			print("</tr>");
 		}
 		print("</table>");
 	}

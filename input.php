@@ -41,11 +41,15 @@ Shaterane, eune</textarea>
 			->execute();
 		$result = $res->fetchAll();
 		
-		dump($result);
-		/*
+		$comments = array();
+		$res = dibi::select('COLUMN_COMMENT')
+			->from('information_schema.COLUMNS')
+			->where('TABLE_NAME = %s', $table)
+			->execute();
+		$comments = $res->fetchAll();
+
 		$printer = new Printer();
-		$printer->printTable($result);
-		*/
+		$printer->printTable($comments, $result);
 		
 		/* ----------------------------------- */
 		print('</div>');
