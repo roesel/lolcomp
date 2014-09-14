@@ -24,7 +24,19 @@ Shaterane, eune</textarea>
 		$group = new Group($input);
 		
 		print('<div id="print" style="float:left;width:700px;">');
-		print('Group created');
+		/* ----------------------------------- */
+		$table = "stats_unranked";
+		$existing_players = $group->getExistingPlayers();
+		
+		$res = dibi::select('*')
+			->from($table)
+			->where('( id, region) ')
+			->in($existing_players)
+			->execute();
+		$result = $res->fetchAll();
+		
+		dump($result);
+		/* ----------------------------------- */
 		print('</div>');
 	} 
 ?>
