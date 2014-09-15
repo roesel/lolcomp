@@ -180,6 +180,8 @@ CREATE TABLE IF NOT EXISTS `stats_one_for_all5x5` (
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
   `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Kills',
+  `total_minion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Minion kills',
+  `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
   `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
   `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
