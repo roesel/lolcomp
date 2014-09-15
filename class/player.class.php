@@ -8,7 +8,7 @@ class Player
     private $stats = array();
     
 	// status returned from call
-    public $status;
+    private $status;
     
 /*-- Constructor -------------------------------------------------------------*/
     function __construct($general)
@@ -174,47 +174,50 @@ class Player
 		// get data from api
 		$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
         $data = $this->getCallResult($addr);//getData($addr);
-		$j = json_decode($data, True);
-
-		// get playerStatSummaries from api, divide them into categories and save into private stats
-		// each name convert from camelCase to snake_case, time convert from time-stamp to normal date-time
-		foreach ($j["playerStatSummaries"] as $element)
-		{
-			foreach ($element as $summary_name => $summary_value)
-			{
-				if ($summary_name == "playerStatSummaryType")
-				{
-					$name = $this->camelToSnakeCase($summary_value);
-					$this->stats[$name] = array();
-					$this->stats[$name]["id"] = $id;
-					$this->stats[$name]["region"] = $region;
-				}
-				else if ($summary_name == "aggregatedStats")
-				{
-					foreach ($summary_value as $stat_name => $stat_value)
-					{
-						$stat_name = $this->camelToSnakeCase($stat_name);
-						$this->stats[$name][$stat_name] = $stat_value;
-					}
-				}
-				else if ($summary_name == "modifyDate")
-				{
-					$summary_name = $this->camelToSnakeCase($summary_name);
-					$this->stats[$name][$summary_name] = $this->timeStampToNormal($summary_value/1000);
-				}
-				else
-				{
-					$summary_name = $this->camelToSnakeCase($summary_name);
-					$this->stats[$name][$summary_name] = $summary_value;
-				}
-			}
-		}
 		
-		// add time of creation of stats into stats["general"]
-		$this->stats["general"]['date_stats'] = $this->timeStampToNormal(time());
-		
-		// add received stats into database
-		$this->addStatsToDatabase();
+        if ($this->status == 200)
+        {
+            $j = json_decode($data, True);
+            // get playerStatSummaries from api, divide them into categories and save into private stats
+            // each name convert from camelCase to snake_case, time convert from time-stamp to normal date-time
+            foreach ($j["playerStatSummaries"] as $element)
+            {
+                foreach ($element as $summary_name => $summary_value)
+                {
+                    if ($summary_name == "playerStatSummaryType")
+                    {
+                        $name = $this->camelToSnakeCase($summary_value);
+                        $this->stats[$name] = array();
+                        $this->stats[$name]["id"] = $id;
+                        $this->stats[$name]["region"] = $region;
+                    }
+                    else if ($summary_name == "aggregatedStats")
+                    {
+                        foreach ($summary_value as $stat_name => $stat_value)
+                        {
+                            $stat_name = $this->camelToSnakeCase($stat_name);
+                            $this->stats[$name][$stat_name] = $stat_value;
+                        }
+                    }
+                    else if ($summary_name == "modifyDate")
+                    {
+                        $summary_name = $this->camelToSnakeCase($summary_name);
+                        $this->stats[$name][$summary_name] = $this->timeStampToNormal($summary_value/1000);
+                    }
+                    else
+                    {
+                        $summary_name = $this->camelToSnakeCase($summary_name);
+                        $this->stats[$name][$summary_name] = $summary_value;
+                    }
+                }
+            }
+            
+            // add time of creation of stats into stats["general"]
+            $this->stats["general"]['date_stats'] = $this->timeStampToNormal(time());
+            
+            // add received stats into database
+            $this->addStatsToDatabase();
+        }
 	}
 
 /*-- Function to load ranked basic from api and save into private stats ------*/
@@ -365,7 +368,10 @@ class Player
         do
         {
             $response = curl_exec($handle);
+            // Check for 404 (file not found)
             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+            $this->status = $httpCode;
+            //wait for next call
             usleep(API_REQUEST_WAIT);
         } while ($httpCode == 429);
         

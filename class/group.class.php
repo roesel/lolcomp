@@ -12,13 +12,16 @@ class Group
 	private $existing_players = array();
     
 	// status returned from call
-    public $status;
+    private $status;
     
 /*-- Constructor -------------------------------------------------------------*/
     function __construct($string_input)
 	{
         $missing_players = $this->smartParse($string_input);
-		$this->loadFromAPI($missing_players);
+        if (count($missing_players) != 0 )
+        {
+            $this->loadFromAPI($missing_players);
+        }
     }
 	
 /*-- Function to parse input names and regions -------------------------------*/
@@ -110,36 +113,43 @@ class Group
 			
             // get data from api
 			$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$comma_separated_summoners.'?api_key='.API_KEY;
-			$data = $this->getCallResult($addr);//getData($addr);
-			$response = json_decode($data, True);
-
-			foreach ($response as $summoner_name => $info_array)
-			{	
-				// $region already properly set
-				$id = $info_array["id"];
-				$name = $info_array["name"];
-				$profile_icon_id = $info_array["profileIconId"];
-				$revision_date = $info_array["revisionDate"];
-				$summoner_level = $info_array["summonerLevel"];
-				
-				// create group in database
-				$this->insertIntoDatabase($id, $name, $region);
-				
-                $player_init_array = array(
-                    "name"					=> $name,
-					"region"                => $region,
-                    "id"                    => $id,
-                    "profile_icon_id"       => $profile_icon_id,
-                    "revision_date"         => $revision_date,
-                    "summoner_level"        => $summoner_level,
-                );
-				$player = new Player($player_init_array);		// creates instance player with set informations
-				$this->addIdRegion($id, $region);				// adds id and region of created player into array existing_players
-                
-                array_push($players, $player);
-				array_push($responded_names, $summoner_name);
-			}
-			$this->errors[$region] = array_diff($summoner_array, $responded_names);		// add to error input
+			$data = $this->getCallResult($addr);
+            if ($this->status == 200)
+            {
+                $response = json_decode($data, True);
+             
+                foreach ($response as $summoner_name => $info_array)
+                {	
+                    // $region already properly set
+                    $id = $info_array["id"];
+                    $name = $info_array["name"];
+                    $profile_icon_id = $info_array["profileIconId"];
+                    $revision_date = $info_array["revisionDate"];
+                    $summoner_level = $info_array["summonerLevel"];
+                    
+                    // create group in database
+                    $this->insertIntoDatabase($id, $name, $region);
+                    
+                    $player_init_array = array(
+                        "name"					=> $name,
+                        "region"                => $region,
+                        "id"                    => $id,
+                        "profile_icon_id"       => $profile_icon_id,
+                        "revision_date"         => $revision_date,
+                        "summoner_level"        => $summoner_level,
+                    );
+                    $player = new Player($player_init_array);		// creates instance player with set informations
+                    $this->addIdRegion($id, $region);				// adds id and region of created player into array existing_players
+                    
+                    array_push($players, $player);
+                    array_push($responded_names, $summoner_name);
+                }
+                $this->errors[$region] = array_diff($summoner_array, $responded_names);		// add to error input
+            }
+            else
+            {
+                $this->errors[$region] = $summoner_array;
+            }
 		}
         return $players;
     }
@@ -173,7 +183,10 @@ class Group
         do
         {
             $response = curl_exec($handle);
+            // Check for 404 (file not found)
             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+            $this->status = $httpCode;
+            //wait for next call
             usleep(API_REQUEST_WAIT);
         } while ($httpCode == 429);
         

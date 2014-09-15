@@ -1,3 +1,4 @@
-- fix the bug described in one of the commits
 - highlight current order value (maybe red color of triangle, and <strong> that specific header)
 - think about deleting outdated database rows
+- ranked stats
+- solve ritos fault (api call returns extra data)
