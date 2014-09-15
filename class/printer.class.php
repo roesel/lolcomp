@@ -12,7 +12,7 @@ class Printer
 	{
 		foreach ($available_tables as $table)
 		{
-			if ($_POST['table'] == $table['table_name'])
+			if (isset($_POST["table"]) && $_POST['table'] == $table['table_name'])
 			{
 				printf('<option value="%s" selected = "selected">%s</option>', $table['table_name'], $table['table_comment']);
 			}
