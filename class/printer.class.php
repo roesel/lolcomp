@@ -1,42 +1,47 @@
 <?php 
-
+/*-- Static class printer, used to print html code ---------------------------*/
 class Printer
 {
     
+/*-- Constructor -------------------------------------------------------------*/
     function __construct()
     {
-
     }
-	
+
+/*-- Static function to print names of available tables into selection -------*/
 	static function printAvailableTables($available_tables) 
 	{
 		foreach ($available_tables as $table)
 		{
-			if (isset($_SESSION["table"]) && $_SESSION['table'] == $table['table_name'])
+			if (isset($_SESSION["table"]) && $_SESSION['table'] == $table['table_name'])	// remember previous input
 			{
 				printf('<option value="%s" selected = "selected">%s</option>', $table['table_name'], $table['table_comment']);
 			}
-			else
+			else																			// print other table names
 			{
 				printf('<option value="%s" >%s</option>', $table['table_name'], $table['table_comment']);
 			}
 		}
 	}
-	
+
+/*-- Static function to print table of parameters ----------------------------*/
 	static function printTable($head,$table)
 	{
+		// beggining of table
 		print('<table style=\"width:100%\" id="box-table-a">');
-		print('<tr>');
 		
-		foreach ($head as $column => $names)		//header
+		// header of table
+		print('<tr>');
+		foreach ($head as $column => $names)		
 		{
 			foreach ($names as $name => $value)
 			{
-				if ($name=='COLUMN_COMMENT') {
+				if ($name=='COLUMN_COMMENT') 
+				{
 					print('<th>'.$value);
 				}
-				
-				if ($name=='COLUMN_NAME') {
+				if ($name=='COLUMN_NAME') 
+				{
 					print('
 						<a href="./?orderby='.$value.'&way=desc">&blacktriangledown;</a>
 						<a href="./?orderby='.$value.'&way=asc"> &blacktriangle;  </a>
@@ -46,7 +51,8 @@ class Printer
 		}
 		print("</tr>");
 		
-		foreach ($table as $row => $names)			//body
+		// body of table
+		foreach ($table as $row => $names)
 		{
 			print("<tr>");
 			foreach ($names as $name => $value)
@@ -58,20 +64,27 @@ class Printer
 		print("</table>");
 	}
 	
+/*-- Static function to print ordering of table ------------------------------*/
 	static function printGetParameters()
 	{
-		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"])) {
+		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"]))
+		{
 			print("?orderby=".$_SESSION["orderby"]."&way=".$_SESSION["way"]);
-		} else {
+		} 
+		else
+		{
 			print("");
 		}
 	}
-	
+
+/*-- Static function to print predefined players into selection --------------*/
 	static function printPlayers()
 	{
-		if (isset($_SESSION["players"])) {
+		if (isset($_SESSION["players"])) 
+		{
 			print($_SESSION["players"]);
-		} else {
+		} else 
+		{
 			print("Erthainel, eune
 Ruzgud, eune
 TSM Bjergsen, na
@@ -79,4 +92,5 @@ Shaterane, eune");
 		}
 	}
 }
+/*-- End ---------------------------------------------------------------------*/
 ?>

@@ -1,8 +1,9 @@
 <?php
 require('__init.php');
-/* ---------------------------------------------------------------------------*/
 
-// set input parametres
+/* -- Testing script for dibi ------------------------------------------------*/
+
+/* -- Save hardcoded parameters into general array ---------------------------*/
 $general = array(
     "region"=>"eune", 
     "id"=>21631229, 
@@ -12,18 +13,14 @@ $general = array(
     "summoner_level"=>"30",
     );
 
-
-/* ---------------------------------------------------------------------------*/
-
+/* -- Create instance player, with set parameters ----------------------------*/
 $p = new Player($general);
 
-
-// stats
+/* -- Get all stats for the player (all game modes) --------------------------*/
 $stats = $p->stats;
-
 //var_dump($stats);
-/* -------------------------------------------------------------------------- */
 
+/* -- Connect to mysql database ----------------------------------------------*/
 include_once("dibi.min.php");
 include_once("db.secret.php");
 dibi::connect($mysql_credentials);
@@ -38,8 +35,7 @@ $row = $stats[$stat_section];
 $row["id"]=$id;
 $row["region"]=$region;
 
-/* ---------------------------------------------------------------------------*/
-// select
+/* -- Test selecting from database -------------------------------------------*/
 $res = dibi::select('*')
     ->from($table)
     ->orderBy('id')
@@ -101,6 +97,8 @@ if ($returned_rows>0) {
     print("No entries found!\n\n");
 }
 
-/* ---------------------------------------------------------------------------*/
+/* -- Print all in general array ---------------------------------------------*/
 dump($general);
+
+/* -- End --------------------------------------------------------------------*/
 ?>

@@ -1,14 +1,16 @@
 <?php 
-// Including init (required files)
+/*-- Including init (required files) -----------------------------------------*/
 require('../__init.php'); 
 
-// If there is POST data, save it into SESSION data
-if (isset($_POST["players"]) && isset($_POST["table"])) {
-		$_SESSION["players"] = $_POST["players"];
-		$_SESSION["table"] = $_POST["table"];
+// If POST data exist, save them into SESSION data
+if (isset($_POST["players"]) && isset($_POST["table"])) 
+{
+	$_SESSION["players"] = $_POST["players"];
+	$_SESSION["table"] = $_POST["table"];
 }
 
-if (isset($_GET["orderby"]) && isset($_GET["way"])) {
+if (isset($_GET["orderby"]) && isset($_GET["way"])) 
+{
 	$_SESSION["orderby"] = $_GET["orderby"];
 	$_SESSION["way"] = $_GET["way"];
 }
@@ -28,7 +30,8 @@ if (isset($_GET["orderby"]) && isset($_GET["way"])) {
 	<br/>
 	Table:
 	<select name="table">
-		<?php 
+		<?php
+			// create list of tables to choose from
 			Printer::printAvailableTables(
 				Info::getAvailableTables()
 			);
@@ -38,7 +41,9 @@ if (isset($_GET["orderby"]) && isset($_GET["way"])) {
 	</form>
 </div>
 <?php
-	if (isset($_SESSION["players"]) && isset($_SESSION["table"])) {
+/*-- Create table of players, according to chosen type of game ---------------*/
+	if (isset($_SESSION["players"]) && isset($_SESSION["table"]))
+	{
 		$input = $_SESSION["players"];
 		$table = $_SESSION["table"];
 

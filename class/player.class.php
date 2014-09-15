@@ -1,42 +1,32 @@
 <?php 
-/* Fix for special characters */
-header('Content-type: text/html; charset=utf-8');
-mb_internal_encoding("UTF-8");
-
-class Player		// test commit
+/*-- Including init (required files) -----------------------------------------*/
+require('../__init.php');
+ 
+/*-- Class player, used to acquire stats about summoner ----------------------*/
+class Player
 {
-    public $id;
-    public $name;
-    public $region;
-	
-	public $profile_icon_id;
-	public $revision_date;
-	public $summoner_level;
-    
-    public $rank;
-    public $rank_roman;
-    public $lp;
-    public $league;
-    public $tier;
-    
     private $stats = array();
     
+	// status returned from call
     public $status;
     
+/*-- Constructor -------------------------------------------------------------*/
     function __construct($general)
     {
-		$this->setGeneral($general);
+		$this->getGeneral($general);
 		$this->check(1);
 		$this->getStats();
 		$this->check(2);
+		
+		// to do: ranked
+		
         // $this->loadRankedBasic();
         // $this->check(2);
-        
         // $this->loadRankedStats();
         // $this->check(3);
     }
 	
-	// function to decide whether to call or not, depending on stats, and return stats
+/*-- Function to decide whether to call loadStats, depending on their date ---*/
 	function getStats()
 	{
 		if (!$this->isInDatabaseStats())
@@ -46,27 +36,8 @@ class Player		// test commit
 		return $this->stats;
 	}
     
-    function check($loop) {
-        /* 
-          404 - not found
-          429 - too many requests
-        */
-        $status = $this->status;
-        if ($status==404 && isset($this->id)){
-            $status=404;
-        }
-        switch ($status) {
-            case 404: throw new Exception($status); break;
-            case 429: throw new Exception($status); break;
-            case 4041: throw new Exception($status); break;
-        }
-    }
-    
-    /*
-      Gets the proper name and ID of a player under a specified name.
-    */
-	
-	function setGeneral($general)
+/*-- Function to set general stats in database if not existent or old --------*/
+	function getGeneral($general)
 	{
 		foreach ($general as $stat_name => $stat_value)
 		{
@@ -80,16 +51,9 @@ class Player		// test commit
 			}
 		}
 
-		//dump($this->stats["general"]);
-		
-		$table = "general";
-		$row = $this->stats["general"];
-
 		if (!$this->isInDatabaseGeneral())
 		{
-			dibi::insert($table, $row)
-				->on('DUPLICATE KEY UPDATE %a ', $row)
-				->execute();
+			$this->addGeneralToDatabase();
 		}
 		else
 		{
@@ -97,48 +61,45 @@ class Player		// test commit
 		}
 	}
 
-	function isInDatabaseGeneral() 
+/*-- Function to check if general stats in database are up to date -----------*/
+// also works to check if general exists
+	function isInDatabaseGeneral()
 	{
+		// $table = "general";
+		
+		// get number of entries from database
+		// $id = $this->stats["general"]["id"];
+		// $region = $this->stats["general"]["region"];
+		// $res = dibi::select('*')
+			// ->from($table)
+			// ->where('id = %i and region = %s', $id, $region)
+			// ->execute();
+		// $result = $res->fetchAll();
+		// $returned_rows = sizeof($result);
+		
+		// check if entry already exists (number of rows is 1 or 0)
+		// if ($returned_rows == 0) 
+		// {
+			// return false;
+		// } 
+		// else 
+		// {
+			// return true;
+		// }
 		$table = "general";
+		
+		// get date-time info from database
 		$id = $this->stats["general"]["id"];
 		$region = $this->stats["general"]["region"];
 		$res = dibi::select('*')
 			->from($table)
 			->where('id = %i and region = %s', $id, $region)
-			//->orderBy('id')
 			->execute();
-			
 		$result = $res->fetchAll();
-		// dump($result);
+		$date_general = strtotime($result[0]["revision_date"]);
 		
-		$returned_rows = sizeof($result);
-		if ($returned_rows==0) 
-		{
-			return false;
-		} 
-		else 
-		{
-			return true;
-		}
-	}
-	
-	function isInDatabaseStats() 
-	{
-		$table = "general";
-		$id = $this->stats["general"]["id"];
-		$region = $this->stats["general"]["region"];
-		$res = dibi::select('*')
-			->from($table)
-			->where('id = %i and region = %s', $id, $region)
-			//->orderBy('id')
-			->execute();
-		
-		$result = $res->fetchAll();
-		// dump($result);
-		
-		$resu = strtotime($result[0]["date_stats"]);
-
-		if (time() - $resu > MAIN_CACHE_TIME)
+		// check if actual time is larger by MAIN_CACHE_TIME than date of general, if date of general exists
+		if (isset($date_general) && time() - $date_general > MAIN_CACHE_TIME)
 		{
 			return false;
 		}
@@ -148,20 +109,64 @@ class Player		// test commit
 		}
 	}
 	
+/*-- Function to check if stats in database are up to date -------------------*/
+// also works to check if stats exist
+	function isInDatabaseStats()
+	{
+		$table = "general";
+		
+		// get date-time info from database
+		$id = $this->stats["general"]["id"];
+		$region = $this->stats["general"]["region"];
+		$res = dibi::select('*')
+			->from($table)
+			->where('id = %i and region = %s', $id, $region)
+			->execute();
+		$result = $res->fetchAll();
+		$date_stats = strtotime($result[0]["date_stats"]);
+		
+		// check if actual time is larger by MAIN_CACHE_TIME than date of stats
+		if (time() - $date_stats > MAIN_CACHE_TIME)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+/*-- Function to check if call to api did not return error -------------------*/
+    function check($n_loop) {
+        /* 
+          404 - not found
+          429 - too many requests
+        */
+        $status = $this->status;
+        if ($status==404 && isset($this->id)){
+            $status=404;
+        }
+        switch ($status) {
+            case 404: throw new Exception($status); break;
+            case 429: throw new Exception($status); break;
+            case 4041: throw new Exception($status); break;
+        }
+    }	
+	
+/*-- Function to load game stats from api and save them into private stats ---*/
 	function loadStats()
 	{
 		// get stats by ID - wins,loses,kills,... in a bunch of modes
 		$id = $this->stats["general"]["id"];
 		$region = $this->stats["general"]["region"];
 
-        $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
-
+		// get data from api
+		$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
         $data = $this->getData($addr);
 		$j = json_decode($data, True);
 
-		// var_dump($j);
-		// exit();
-		
+		// get playerStatSummaries from api, divide them into categories and save into private stats
+		// each name convert from camelCase to snake_case, time convert from time-stamp to normal date-time
 		foreach ($j["playerStatSummaries"] as $element)
 		{
 			foreach ($element as $summary_name => $summary_value)
@@ -178,139 +183,176 @@ class Player		// test commit
 					foreach ($summary_value as $stat_name => $stat_value)
 					{
 						$stat_name = $this->camelToSnakeCase($stat_name);
-						// array_push($this->stats[$name], array($stat_name, $stat_value));
 						$this->stats[$name][$stat_name] = $stat_value;
 					}
 				}
 				else if ($summary_name == "modifyDate")
 				{
 					$summary_name = $this->camelToSnakeCase($summary_name);
-					$this->stats[$name][$summary_name] = $this->timeStampToNormal($summary_value/1000); //
+					$this->stats[$name][$summary_name] = $this->timeStampToNormal($summary_value/1000);
 				}
 				else
 				{
 					$summary_name = $this->camelToSnakeCase($summary_name);
-					// array_push($this->stats[$name], array($summary_name, $summary_value));
 					$this->stats[$name][$summary_name] = $summary_value;
 				}
 			}
 		}
+		
+		// add time of creation of stats into stats["general"]
 		$this->stats["general"]['date_stats'] = $this->timeStampToNormal(time());
+		
+		// add received stats into database
+		$this->addStatsToDatabase();
+	}
+
+/*-- Function to load ranked basic from api and save into private stats ------*/
+// needs check before implementing
+    function loadRankedBasic() 
+	{
+        // get ranked stats by ID - league, division name, ...
+		$id = $this->stats["general"]["id"];
+		$region = $this->stats["general"]["region"];
+
+		// get data from api
+        $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v2.4/league/by-summoner/'.$id.'?api_key='.API_KEY;
+        $data = $this->getData($addr);
+        $j = json_decode($data, True);
+        
+		$this->stats["ranked_basic"] = array();
+        $this->stats["ranked_basic"]["league"] = $j[$id][0]["name"];
+        $this->stats["ranked_basic"]["tier"] = $j[$id][0]["tier"];
+        $this->stats["ranked_basic"]["rank_roman"] = 0;
+        $this->stats["ranked_basic"]["lp"] = 0;
+        
+        foreach($j[$id][0]["entries"] as $num) 
+		{
+            if ($num["playerOrTeamId"]==$id)
+			{
+                $this->stats["ranked_basic"]["rank_roman"] = $num["division"];
+                $this->stats["ranked_basic"]["lp"] = $num["leaguePoints"];
+				$this->stats["ranked_basic"]["rank"] = $this->r2a($this->stats["ranked_basic"]["rank_roman"]);
+            }
+        }
+    }
+    
+/*-- Function to load ranked stats from api and save into private stats ------*/
+// needs check before implementing
+    function loadRankedStats() 
+	{
+        // get detailed ranked stats by ID
+		$id = $this->stats["general"]["id"];
+		$region = $this->stats["general"]["region"];
+        
+		// get data from api
+        $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/ranked?season=SEASON4&api_key='.API_KEY;    
+        $data = $this->getData($addr);
+        $j = json_decode($data, True);
+        
+		foreach ($j["champions"] as $champion)
+		{
+			if ($champion["id"]=="0")
+			{
+				$combined = $champion;
+			}
+		}
+		
+        $s = $combined["stats"];
+        
+		$this->stats["ranked_stats"] = array();
+        
+        $wins = $s["totalSessionsWon"];
+        $losses = $s["totalSessionsLost"];
+		
+        $wratio = round(100*$wins/($wins+$losses),1);
+        
+        $this->stats["ranked_stats"]["Pentas"] = $s["totalPentaKills"];
+        $this->stats["ranked_stats"]["Win ratio"] = $wratio." %";
+        $this->stats["ranked_stats"]["Kills"] = $s["totalChampionKills"];
+        $this->stats["ranked_stats"]["Assists"] = $s["totalAssists"];
+        $this->stats["ranked_stats"]["Max Spree"] = $s["maxLargestKillingSpree"];
+	}
+
+/*-- Function to add general into database -----------------------------------*/
+	function addGeneralToDatabase()
+	{
+		$name = "general";
+		$value = $this->stats["general"];
+		
+		dibi::insert($name, $value)
+				->on('DUPLICATE KEY UPDATE %a ', $value)
+				->execute();
+	}
+	
+/*-- Function to add stats into database -------------------------------------*/
+	function addStatsToDatabase()
+	{
 		foreach ($this->stats as $stat_name => $stat_value)
 		{
-			if($this->tableExists('stats_'.$stat_name))
+			if($this->tableExists('stats_'.$stat_name))				// check if table exists for stats_*
 			{
 				dibi::insert('stats_'.$stat_name, $stat_value)
 					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
 					->execute();
 			}
-			else if($this->tableExists($stat_name))
+			else if($this->tableExists($stat_name))					// check else if table exists for general,...
 			{
 				dibi::insert($stat_name, $stat_value)
 					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
 					->execute();
 			}
-			else
+		}
+	}
+	
+/*-- Function to add ranked into database ------------------------------------*/
+	function addRankedToDatabase()
+	{
+		foreach ($this->stats as $stat_name => $stat_value)
+		{
+			if($this->tableExists('ranked_'.$stat_name))			// check if table exists for ranked_*
 			{
-				// print($stat_name."\n");
-				// dump($stat_value);
+				dibi::insert('ranked_'.$stat_name, $stat_value)
+					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
+					->execute();
+			}
+			else if($this->tableExists($stat_name))					// check else if table exists for general,...
+			{
+				dibi::insert($stat_name, $stat_value)
+					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
+					->execute();
 			}
 		}
 	}
 	
+/*-- Function to decide whether the table in database exists -----------------*/
 	function tableExists($tablename, $database = false) 
 	{
- 
-    if(!$database) {
-        $res = mysql_query("SELECT DATABASE()");
-        $database = mysql_result($res, 0);
-    }
- 
-    $res = mysql_query("
-        SELECT COUNT(*) AS count
-        FROM information_schema.tables 
-        WHERE table_schema = '$database'
-        AND table_name = '$tablename'
-    ");
- 
-    return mysql_result($res, 0) == 1;
+		if(!$database)
+		{
+			$res = mysql_query("SELECT DATABASE()");
+			$database = mysql_result($res, 0);
+		}
+	 
+		$res = mysql_query("
+			SELECT COUNT(*) AS count
+			FROM information_schema.tables 
+			WHERE table_schema = '$database'
+			AND table_name = '$tablename'
+		");
+	 
+		return mysql_result($res, 0) == 1;
 	}
-	
-	function timeStampToNormal($time_stamp)
-	{
-		$date_string = "Y-m-d H:i:s";
-		$create_date = date($date_string, $time_stamp);
-		return $create_date;
-	}
-    
-    function loadRankedBasic() {
-        // get ranked stats by ID - league, division name, ...
-        $id = $this->id;
-        $addr = 'http://'.$this->region.'.api.pvp.net/api/lol/'.$this->region.'/v2.4/league/by-summoner/'.$id.'?api_key='.API_KEY;
-        
-        $data = $this->getData($addr);
-        
-        $j = json_decode($data, True);
-        
-        $this->league = $j[$id][0]["name"];
-        $this->tier = $j[$id][0]["tier"];
-        $this->rank_roman = 0;
-        $this->lp = 0;
-        
-        foreach($j[$id][0]["entries"] as $num) {
-            if ($num["playerOrTeamId"]==$id){
-                $this->rank_roman = $num["division"];
-                $this->lp = $num["leaguePoints"];
-				$this->rank = $this->r2a($this->rank_roman);
-            }
-        }
-        
-        
-    }
-    
-    function loadRankedStats() {
-        $id = $this->id;
-        
-        // get detailed ranked stats by ID
-        $addr = 'http://'.$this->region.'.api.pvp.net/api/lol/'.$this->region.'/v1.3/stats/by-summoner/'.$id.'/ranked?season=SEASON4&api_key='.API_KEY;
-        
-        $data = $this->getData($addr);
-        
-        $j = json_decode($data, True);
-        
-		foreach ($j["champions"] as $champion) {
-			if ($champion["id"]=="0") {
-				$combined = $champion;
-			}
-		}        
-        
-        $s = $combined["stats"];
-        
-        $stats = array();
-        
-        $wins = $s["totalSessionsWon"];
-        $losses = $s["totalSessionsLost"];
-                
-        $wratio = round(100*$wins/($wins+$losses),1);
-        
-        array_push($stats, array("Pentas", $s["totalPentaKills"]));  
-        array_push($stats, array("Win ratio", $wratio." %"));
-        array_push($stats, array("Kills", $s["totalChampionKills"]));
-        array_push($stats, array("Assists", $s["totalAssists"]));   
-        array_push($stats, array("Max Spree", $s["maxLargestKillingSpree"]));
-        
-        $this->stats = $stats;    
-    }
-    
+	   
+/*-- Function to get data from url -------------------------------------------*/
     function getData($url) {
         
         $handle = curl_init($url);
         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
         
-        /* Get the HTML or whatever is linked in $url. */
+        // Get the HTML or whatever is linked in $url
         $response = curl_exec($handle);
         
-        /* Check for 404 (file not found). */
+        // Check for 404 (file not found)
         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         
         $this->status = $httpCode;
@@ -320,8 +362,11 @@ class Player		// test commit
         return $response;
     }
     
-    function r2a($roman) {
-        switch ($roman) {
+/*-- Function to convert division into integer -------------------------------*/
+    function r2a($roman) 
+	{
+        switch ($roman) 
+		{
             case "I": return 1;
             case "II": return 2;
             case "III": return 3;
@@ -330,7 +375,16 @@ class Player		// test commit
             default: return 0;
         }
     }
-	
+
+/*-- Function to convert timestamp into normal date-time ---------------------*/
+	function timeStampToNormal($time_stamp)
+	{
+		$date_string = "Y-m-d H:i:s";						// form of date-time
+		$create_date = date($date_string, $time_stamp);
+		return $create_date;
+	}
+ 
+/*-- Function to convert camelCase to snake_case------------------------------*/
 	function camelToSnakeCase($camel)
 	{
 		$camel = preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $camel);
@@ -338,4 +392,5 @@ class Player		// test commit
 		return $snake;
 	}
 }
+/*-- End ---------------------------------------------------------------------*/
 ?>

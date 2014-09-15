@@ -1,8 +1,10 @@
 <?php
 require('__init.php');
 
-/* ---------------------------------------------------------------------------*/
+/* -- Testing script for class player ----------------------------------------*/
 
+/* -- If input region, id, name, profile icon id, revision date and level, ---*/
+/* -- are set, proceed to save them into array -------------------------------*/
 if (isset($_GET["region"]) && 
 	isset($_GET["id"]) && 
 	isset($_GET["name"]) && 
@@ -10,7 +12,7 @@ if (isset($_GET["region"]) &&
 	isset($_GET["revision_date"]) && 
 	isset($_GET["summoner_level"]))
 {
-    // get input parametres
+/* -- Save input parameters into general array -------------------------------*/
 	$general = array(
 		"region"=>$_GET["region"], 
 		"id"=>$_GET["id"], 
@@ -21,13 +23,12 @@ if (isset($_GET["region"]) &&
 		);
 }
 
-/* ---------------------------------------------------------------------------*/
-
+/* -- Create instance player, with set parameters ----------------------------*/
 $p = new Player($general);
 
-
-// stats
+/* -- Get all stats for the player (all game modes) and print them -----------*/
 $stats = $p->getStats();
-
 dump($stats);
-/* -------------------------------------------------------------------------- */
+
+/* -- End --------------------------------------------------------------------*/
+?>

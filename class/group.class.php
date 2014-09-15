@@ -1,23 +1,29 @@
 <?php 
-/* Fix for special characters */
-mb_internal_encoding("UTF-8");
+/*-- Including init (required files) -----------------------------------------*/
+require('../__init.php'); 
 
+/*-- Class group, used to sort and acquire general stats about summoners -----*/
 class Group
 {
-    // Pole objektů Player naplněné hráči
+    // array of players (filled with players)
     public $players = array();
 	
 	private $errors = array();
 	private $existing_players = array();
     
+	// status returned from call
     public $status;
     
-    function __construct($string_input) {
+/*-- Constructor -------------------------------------------------------------*/
+    function __construct($string_input)
+	{
         $missing_players = $this->smartParse($string_input);
 		$this->loadFromAPI($missing_players);
     }
 	
-	function smartParse($string_input) {
+/*-- Function to parse input names and regions -------------------------------*/
+	function smartParse($string_input)
+	{
 		// Strip spaces (API ignores them anyway)
 		$input = str_replace(' ', '', $string_input);   // remove spaces
 		$input = str_replace("\r\n", "\n", $input);
@@ -50,7 +56,9 @@ class Group
 		return $summoners_sorted_array;
 	}
 	
-	function isInDatabase($codename, $region) {
+/*-- Function to check if summoner from is in database and if needs update ---*/
+	function isInDatabase($codename, $region)
+	{
 		$table = "group";
 		$res = dibi::select('id')
 			->from($table)
@@ -59,7 +67,9 @@ class Group
 		$result_1 = $res->fetchAll();
 		$row_exists = count($result_1);
 
-		if ($row_exists) {
+		// if is in database
+		if ($row_exists) 
+		{
 			$inner_select = dibi::select('last_updated')
 				->from($table)
 				->where('codename = %s and region = %s', $codename, $region);
@@ -69,6 +79,7 @@ class Group
 			$result = $main_select->fetchAll();
 			$diff = $result[0]["diff"];
 			
+			// if needs update
 			if ($diff<MAIN_CACHE_TIME) {
 				$id = $result_1[0]["id"];
 				$this->addIdRegion($id, $region);	// adds id and region of existing player into array existing_players
@@ -78,24 +89,32 @@ class Group
 		return False;
 	}
     
-    function loadFromAPI($summoners_sorted_array) {
+/*-- Function to load general stats from api and save them into players array */
+// also decides if player from region exists - failures in errors array
+    function loadFromAPI($summoners_sorted_array) 
+	{
         $players = array();
 		$responded_names = array();
         
-        foreach ($summoners_sorted_array as $region => $summoner_array) {
+		// take summoners for each region
+        foreach ($summoners_sorted_array as $region => $summoner_array)
+		{
             $comma_separated_summoners = "";
 
-            foreach ($summoner_array as $summoner_name) {
-                $comma_separated_summoners = $comma_separated_summoners.$summoner_name.",%20";  // Spaces changed to %20 - curl doesn't like spaces
+            // separate summoners with coma and space
+			// spaces changed to %20 - curl doesn't like spaces
+			foreach ($summoner_array as $summoner_name)
+			{
+                $comma_separated_summoners = $comma_separated_summoners.$summoner_name.",%20"; 
             }
-            $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$comma_separated_summoners.'?api_key='.API_KEY;
-            
-            $data = $this->getData($addr);
-            
+			
+            // get data from api
+			$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.4/summoner/by-name/'.$comma_separated_summoners.'?api_key='.API_KEY;
+			$data = $this->getData($addr);
 			$response = json_decode($data, True);
 
-			foreach ($response as $summoner_name => $info_array) {
-				
+			foreach ($response as $summoner_name => $info_array)
+			{	
 				// $region already properly set
 				$id = $info_array["id"];
 				$name = $info_array["name"];
@@ -103,6 +122,7 @@ class Group
 				$revision_date = $info_array["revisionDate"];
 				$summoner_level = $info_array["summonerLevel"];
 				
+				// create group in database
 				$this->insertIntoDatabase($id, $name, $region);
 				
                 $player_init_array = array(
@@ -113,19 +133,21 @@ class Group
                     "revision_date"         => $revision_date,
                     "summoner_level"        => $summoner_level,
                 );
-				$player = new Player($player_init_array);
-				$this->addIdRegion($id, $region);		// adds id and region of created player into array existing_players
+				$player = new Player($player_init_array);		// creates instance player with set informations
+				$this->addIdRegion($id, $region);				// adds id and region of created player into array existing_players
                 
                 array_push($players, $player);
 				array_push($responded_names, $summoner_name);
 			}
-			$this->errors[$region] = array_diff($summoner_array, $responded_names);
+			$this->errors[$region] = array_diff($summoner_array, $responded_names);		// add to error input
 		}
         return $players;
     }
 	
-	function insertIntoDatabase($id, $name, $region) {
-		$codename = strtolower(preg_replace('/\s+/', '', $name));
+/*-- Function to insert group into database ----------------------------------*/
+	function insertIntoDatabase($id, $name, $region)
+	{
+		$codename = strtolower(preg_replace('/\s+/', '', $name));	// player name
 		
 		$row = array(
 			"codename" 		=> $codename,
@@ -137,10 +159,12 @@ class Group
 		$table = "group";
 		dibi::insert($table, $row)
 			->on('DUPLICATE KEY UPDATE %a ', $row)
-			->execute();
+			->execute();	
 	}
     
-    function getData($url) {
+/*-- Function to get data from url -------------------------------------------*/
+    function getData($url) 
+	{
         
         $handle = curl_init($url);
         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
@@ -158,19 +182,23 @@ class Group
         return $response;
     }
 	
-	function getErrors()					// print array errors
+/*-- Function to print errors (wrong input of players) -----------------------*/
+	function getErrors()
 	{
 		return $this->errors;
 	}
 	
-	function getExistingPlayers()			// print array existing_players
+/*-- Function to print existing palyers --------------------------------------*/
+	function getExistingPlayers()
 	{
 		return $this->existing_players;
 	}
 	
-	function addIdRegion($id, $region)		// adds id and region of players into array existing_players
+/*-- Function to add ID and region into array of existing players ------------*/
+	function addIdRegion($id, $region)
 	{
 		array_push($this->existing_players, array('(%i, %s)', $id, $region));
 	}
 }
+/*-- End ---------------------------------------------------------------------*/
 ?>
