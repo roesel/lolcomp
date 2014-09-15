@@ -90,6 +90,10 @@ Torrda, eune
 Chalcedony, eune");
 		}
 	}
+	
+	static function printVersion() {
+		print('version: <strike>0.002</strike> haha');
+	}
 }
 /*-- End ---------------------------------------------------------------------*/
 ?>
