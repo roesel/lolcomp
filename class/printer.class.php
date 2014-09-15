@@ -66,5 +66,17 @@ class Printer
 			print("");
 		}
 	}
+	
+	static function printPlayers()
+	{
+		if (isset($_SESSION["players"])) {
+			print($_SESSION["players"]);
+		} else {
+			print("Erthainel, eune
+Ruzgud, eune
+TSM Bjergsen, na
+Shaterane, eune");
+		}
+	}
 }
 ?>

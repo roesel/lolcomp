@@ -24,11 +24,7 @@ if (isset($_GET["orderby"]) && isset($_GET["way"])) {
 <div id="form" style="float:left;width:300px;margin-left:150px;">
 	<form action="./<?php Printer::printGetParameters(); ?>" method="post">
 	LoLCompare, version <strike>0.001</strike> rofl <br/>
-	<textarea name="players" rows="20" cols="30">
-Erthainel, eune
-Ruzgud, eune
-TSM Bjergsen, na
-Shaterane, eune</textarea>
+	<textarea name="players" rows="20" cols="30"><?php Printer::printPlayers(); ?></textarea>
 	<br/>
 	Table:
 	<select name="table">
