@@ -1,6 +1,6 @@
 <?php
 /*-- Including init (required files) -----------------------------------------*/
-require('../__init.php');
+// require('../__init.php');
 
 /*-- Static class info, used get informations from database -----------------*/ 
 class Info
@@ -61,28 +61,25 @@ class Info
 			->on('t1.id_general = t2.id')
 			->where('( id, region) ')
 			->in($existing_players);
-<<<<<<< HEAD
-			
+
 		// check if ordering is set and according to it, rearrange selection from database
 		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"])) 
 		{
-=======
-		
-		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"])) {
->>>>>>> origin/master
-			$res=$res->orderBy($_SESSION["orderby"]);
-			if ($_SESSION["way"]=="asc")
+			if (isset($_SESSION["orderby"]) && isset($_SESSION["way"]))
 			{
-			    $res = $res->asc();
-			} else
-			{
-				$res = $res->desc();
+				$res=$res->orderBy($_SESSION["orderby"]);
+				if ($_SESSION["way"]=="asc")
+				{
+					$res = $res->asc();
+				} 
+				else
+				{
+					$res = $res->desc();
+				}
 			}
 		}
-		
 		$res = $res->execute();
 		$body = $res->fetchAll();
-		
 		return $body;
 	}
 }

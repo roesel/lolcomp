@@ -1,6 +1,6 @@
 <?php 
 /*-- Including init (required files) -----------------------------------------*/
-require('../__init.php'); 
+// require('../__init.php'); 
 
 /*-- Class group, used to sort and acquire general stats about summoners -----*/
 class Group

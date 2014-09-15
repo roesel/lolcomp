@@ -1,6 +1,6 @@
 <?php 
 /*-- Including init (required files) -----------------------------------------*/
-require('../__init.php');
+// require('../__init.php');
  
 /*-- Class player, used to acquire stats about summoner ----------------------*/
 class Player
@@ -39,9 +39,10 @@ class Player
 /*-- Function to set general stats in database if not existent or old --------*/
 	function getGeneral($general)
 	{
+		// dump($general);
 		foreach ($general as $stat_name => $stat_value)
 		{
-			if ($stat_name == "revision_date")
+			if ($stat_name == 'revision_date')
 			{
 				$this->stats["general"][$stat_name] = $this->timeStampToNormal($stat_value/1000);
 			}
@@ -96,10 +97,19 @@ class Player
 			->where('id = %i and region = %s', $id, $region)
 			->execute();
 		$result = $res->fetchAll();
-		$date_general = strtotime($result[0]["revision_date"]);
 		
-		// check if actual time is larger by MAIN_CACHE_TIME than date of general, if date of general exists
-		if (isset($date_general) && time() - $date_general > MAIN_CACHE_TIME)
+		// check if data are already in database
+		if (sizeof($result) == 0)
+		{
+			return false;
+		}
+		else
+		{
+			$date_general = strtotime($result[0]["revision_date"]);
+		}
+		
+		// check if actual time is larger by MAIN_CACHE_TIME than date of general
+		if (time() - $date_general > MAIN_CACHE_TIME)
 		{
 			return false;
 		}
