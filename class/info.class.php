@@ -16,7 +16,7 @@ class Info
 	{
 		$result = dibi::select('table_name, table_comment')
 			->from('information_schema.tables')
-			->where('table_schema = %s and table_name', 'lolcompare')
+			->where('table_schema = %s and table_name', 'lolscores')
 			->like('%s', 'stats\_%')
 			->execute();
 		$result = $result->fetchAll();

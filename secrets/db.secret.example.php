@@ -6,7 +6,7 @@ $mysql_credentials = array(
                         'host'     => 'localhost',
                         'username' => 'root',
                         'password' => '',
-                        'database' => 'lolcompare',
+                        'database' => 'lolscores',
                         'charset'  => 'utf8',
                     );
 ?>

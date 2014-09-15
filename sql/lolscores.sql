@@ -11,14 +11,14 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Exportování struktury databáze pro
-DROP DATABASE IF EXISTS `lolcompare`;
-CREATE DATABASE IF NOT EXISTS `lolcompare` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci */;
-USE `lolcompare`;
+DROP DATABASE IF EXISTS `lolscores`;
+CREATE DATABASE IF NOT EXISTS `lolscores` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci */;
+USE `lolscores`;
 
 
 -- Jednotlive mody -------------------------------------------------
 
--- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
+-- Exportování struktury pro tabulka lolscores.aram_unranked5x5
 DROP TABLE IF EXISTS `stats_aram_unranked5x5`;
 CREATE TABLE IF NOT EXISTS `stats_aram_unranked5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `stats_aram_unranked5x5` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
+-- Exportování struktury pro tabulka lolscores.aram_unranked5x5
 DROP TABLE IF EXISTS `stats_ascension`;
 CREATE TABLE IF NOT EXISTS `stats_ascension` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `stats_ascension` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
+-- Exportování struktury pro tabulka lolscores.aram_unranked5x5
 DROP TABLE IF EXISTS `stats_c_a_p5x5`;
 CREATE TABLE IF NOT EXISTS `stats_c_a_p5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `stats_c_a_p5x5` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
+-- Exportování struktury pro tabulka lolscores.aram_unranked5x5
 DROP TABLE IF EXISTS `stats_coop_vs_a_i`;
 CREATE TABLE IF NOT EXISTS `stats_coop_vs_a_i` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `stats_coop_vs_a_i` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+-- Exportování struktury pro tabulka lolscores.ranked_solo5x5
 DROP TABLE IF EXISTS `stats_coop_vs_a_i3x3`;
 CREATE TABLE IF NOT EXISTS `stats_coop_vs_a_i3x3` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `stats_coop_vs_a_i3x3` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+-- Exportování struktury pro tabulka lolscores.ranked_solo5x5
 DROP TABLE IF EXISTS `stats_nightmare_bot`;
 CREATE TABLE IF NOT EXISTS `stats_nightmare_bot` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `stats_nightmare_bot` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
+-- Exportování struktury pro tabulka lolscores.aram_unranked5x5
 DROP TABLE IF EXISTS `stats_odin_unranked`;
 CREATE TABLE IF NOT EXISTS `stats_odin_unranked` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `stats_odin_unranked` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.aram_unranked5x5
+-- Exportování struktury pro tabulka lolscores.aram_unranked5x5
 DROP TABLE IF EXISTS `stats_one_for_all5x5`;
 CREATE TABLE IF NOT EXISTS `stats_one_for_all5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `stats_one_for_all5x5` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+-- Exportování struktury pro tabulka lolscores.ranked_solo5x5
 DROP TABLE IF EXISTS `stats_ranked_solo5x5`;
 CREATE TABLE IF NOT EXISTS `stats_ranked_solo5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `stats_ranked_solo5x5` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+-- Exportování struktury pro tabulka lolscores.ranked_solo5x5
 DROP TABLE IF EXISTS `stats_ranked_team3x3`;
 CREATE TABLE IF NOT EXISTS `stats_ranked_team3x3` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -226,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `stats_ranked_team3x3` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+-- Exportování struktury pro tabulka lolscores.ranked_solo5x5
 DROP TABLE IF EXISTS `stats_ranked_team5x5`;
 CREATE TABLE IF NOT EXISTS `stats_ranked_team5x5` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `stats_ranked_team5x5` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.ranked_solo5x5
+-- Exportování struktury pro tabulka lolscores.ranked_solo5x5
 DROP TABLE IF EXISTS `stats_summoners_rift6x6`;
 CREATE TABLE IF NOT EXISTS `stats_summoners_rift6x6` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `stats_summoners_rift6x6` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.unranked
+-- Exportování struktury pro tabulka lolscores.unranked
 DROP TABLE IF EXISTS `stats_unranked`;
 CREATE TABLE IF NOT EXISTS `stats_unranked` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `stats_unranked` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.unranked
+-- Exportování struktury pro tabulka lolscores.unranked
 DROP TABLE IF EXISTS `stats_unranked3x3`;
 CREATE TABLE IF NOT EXISTS `stats_unranked3x3` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `stats_unranked3x3` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.unranked
+-- Exportování struktury pro tabulka lolscores.unranked
 DROP TABLE IF EXISTS `stats_u_r_f`;
 CREATE TABLE IF NOT EXISTS `stats_u_r_f` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `stats_u_r_f` (
 -- Vseobecne parametre -----------------------------------------------
 
 
--- Exportování struktury pro tabulka lolcompare.general
+-- Exportování struktury pro tabulka lolscores.general
 DROP TABLE IF EXISTS `general`;
 CREATE TABLE IF NOT EXISTS `general` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `general` (
 
 -- Export dat nebyl vybrán.
 
--- Exportování struktury pro tabulka lolcompare.group
+-- Exportování struktury pro tabulka lolscores.group
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',

@@ -18,14 +18,14 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 ?>
 <html>
 <head>
-	<title>LoLCompare version rofl</title>
+	<title>lolscores version rofl</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body style="width:1700px;text-align:left;margin-left:auto;margin-right:auto;">
 
 <div id="form" style="float:left;width:300px;margin-left:150px;">
 	<form action="./<?php Printer::printGetParameters(); ?>" method="post">
-	LoLCompare, version <strike>0.001</strike> rofl <br/>
+	lolscores, version <strike>0.001</strike> rofl <br/>
 	<textarea name="players" rows="20" cols="30"><?php Printer::printPlayers(); ?></textarea>
 	<br/>
 	Table:

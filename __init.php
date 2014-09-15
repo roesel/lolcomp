@@ -1,5 +1,5 @@
 <?php
-/* -- Init script for lolcompare - setting you up with everything you need. --*/
+/* -- Init script for lolscores - setting you up with everything you need. --*/
 
 /* -- Setting safety variable ------------------------------------------------*/
 // todo - safety variable - if not set, exit.
