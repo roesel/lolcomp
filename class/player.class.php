@@ -147,7 +147,8 @@ class Player
 	}
 
 /*-- Function to check if call to api did not return error -------------------*/
-    function check($n_loop) {
+    function check($n_loop)
+    {
         /* 
           404 - not found
           429 - too many requests
@@ -172,7 +173,7 @@ class Player
 
 		// get data from api
 		$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
-        $data = $this->getData($addr);
+        $data = $this->getCallResult($addr);//getData($addr);
 		$j = json_decode($data, True);
 
 		// get playerStatSummaries from api, divide them into categories and save into private stats
@@ -226,7 +227,7 @@ class Player
 
 		// get data from api
         $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v2.4/league/by-summoner/'.$id.'?api_key='.API_KEY;
-        $data = $this->getData($addr);
+        $data = $this->getCallResult($addr);//getData($addr);
         $j = json_decode($data, True);
         
 		$this->stats["ranked_basic"] = array();
@@ -256,7 +257,7 @@ class Player
         
 		// get data from api
         $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/ranked?season=SEASON4&api_key='.API_KEY;    
-        $data = $this->getData($addr);
+        $data = $this->getCallResult($addr);//getData($addr);
         $j = json_decode($data, True);
         
 		foreach ($j["champions"] as $champion)
@@ -353,22 +354,22 @@ class Player
 		return mysql_result($res, 0) == 1;
 	}
 	   
-/*-- Function to get data from url -------------------------------------------*/
-    function getData($url) {
-        
+/*-- Function to get data from api -------------------------------------------*/
+    function getCallResult($url)
+    {
         $handle = curl_init($url);
         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
         
         // Get the HTML or whatever is linked in $url
-        $response = curl_exec($handle);
-        
-        // Check for 404 (file not found)
-        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-        
-        $this->status = $httpCode;
+        // 429 - rate limit, 500 - internal error, 503 - service unavailable
+        do
+        {
+            $response = curl_exec($handle);
+            $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+            usleep(API_REQUEST_WAIT);
+        } while ($httpCode == 429);
         
         curl_close($handle);
-        
         return $response;
     }
     
