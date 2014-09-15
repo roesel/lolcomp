@@ -1,4 +1,14 @@
 - highlight current order value (maybe red color of triangle, and <strong> that specific header)
 - think about deleting outdated database rows
 - ranked stats
-- solve ritos fault (api call returns extra data)
+- sorty na ně
+- global solve ritos fault (api call returns extra data)
+- pretty designs
+- hash v secretu na reset DB
+- constants to secret
+- security variable
+- vypisovat jen nektere sloupečky
+
+ideas:
+- add hash saved sets of players -> LCS players
+- autoload them with bucket so that theyre always live
