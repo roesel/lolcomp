@@ -31,5 +31,8 @@ unset($mysql_credentials);
 /* -- Defining constants -----------------------------------------------------*/
 const MAIN_CACHE_TIME = 30;  // time in seconds, 30 for debug, 6*60*60 for live?
 
+/* -- Start session ----------------------------------------------------------*/
+session_start();
+
 /* ---------------------------------------------------------------------------*/
 ?>

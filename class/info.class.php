@@ -21,7 +21,7 @@ class Info
 	static function createTableHeader($table)
 	{
 		$header = array();
-		$res = dibi::select('COLUMN_COMMENT')
+		$res = dibi::select('COLUMN_COMMENT, COLUMN_NAME')
 			->from('information_schema.COLUMNS')
 			->where('TABLE_NAME = %s', $table)
 			->execute();
@@ -35,8 +35,16 @@ class Info
 		$res = dibi::select('*')
 			->from($table)
 			->where('( id, region) ')
-			->in($existing_players)
-			->execute();
+			->in($existing_players);
+		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"])) {
+			$res=$res->orderBy($_SESSION["orderby"]);
+			if ($_SESSION["way"]=="asc") {
+			    $res = $res->asc();
+			} else {
+				$res = $res->desc();
+			}
+		}
+		$res = $res->execute();
 		$body = $res->fetchAll();
 		return $body;
 	}
