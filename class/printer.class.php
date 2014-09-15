@@ -30,18 +30,18 @@ class Printer
 		
 		foreach ($head as $column => $names)		//header
 		{
-			foreach ($names as $name => $value)
-			{
-				if ($name=='COLUMN_COMMENT') {
-					print('<th>'.$value);
-				}
+			$col_name = $names['COLUMN_COMMENT'];
+			$col_id = $names['COLUMN_NAME'];
+			if ($col_id != 'id') {  // asi existuje lepsi reseni, databaze by to mohla rovnou davat bez toho
 				
-				if ($name=='COLUMN_NAME') {
-					print('
-						<a href="./?orderby='.$value.'&way=desc">&blacktriangledown;</a>
-						<a href="./?orderby='.$value.'&way=asc"> &blacktriangle;  </a>
-						</th>');
-				}
+				print('<th>'.$col_name);
+				print('
+						<a href="./?orderby='.$col_id.'&way=desc">&blacktriangledown;</a>
+						<a href="./?orderby='.$col_id.'&way=asc"> &blacktriangle;  </a>
+						</th>'
+				);
+					
+				
 			}
 		}
 		print("</tr>");
@@ -51,7 +51,9 @@ class Printer
 			print("<tr>");
 			foreach ($names as $name => $value)
 			{
-				print("<td>".$value."</td>");
+				if (($name != 'id') && ($name != 'id_general')) {  // asi existuje lepsi reseni, databaze by to mohla rovnou davat bez toho
+					print("<td>".$value."</td>");
+				}
 			}
 			print("</tr>");
 		}
