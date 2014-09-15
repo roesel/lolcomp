@@ -34,19 +34,16 @@ class Printer
 		print('<tr>');
 		foreach ($head as $column => $names)		
 		{
-			foreach ($names as $name => $value)
+			$col_name = $names['COLUMN_COMMENT'];
+			$col_id = $names['COLUMN_NAME'];
+			if ($col_id != 'id') 
 			{
-				if ($name=='COLUMN_COMMENT') 
-				{
-					print('<th>'.$value);
-				}
-				if ($name=='COLUMN_NAME') 
-				{
-					print('
-						<a href="./?orderby='.$value.'&way=desc">&blacktriangledown;</a>
-						<a href="./?orderby='.$value.'&way=asc"> &blacktriangle;  </a>
-						</th>');
-				}
+				print('<th>'.$col_name);
+				print('
+						<a href="./?orderby='.$col_id.'&way=desc">&blacktriangledown;</a>
+						<a href="./?orderby='.$col_id.'&way=asc"> &blacktriangle;  </a>
+						</th>'
+				);
 			}
 		}
 		print("</tr>");
@@ -57,7 +54,10 @@ class Printer
 			print("<tr>");
 			foreach ($names as $name => $value)
 			{
-				print("<td>".$value."</td>");
+				if (($name != 'id') && ($name != 'id_general'))
+				{
+					print("<td>".$value."</td>");
+				}
 			}
 			print("</tr>");
 		}
