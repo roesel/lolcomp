@@ -85,10 +85,9 @@ class Printer
 			print($_SESSION["players"]);
 		} else 
 		{
-			print("Erthainel, eune
-Ruzgud, eune
-TSM Bjergsen, na
-Shaterane, eune");
+			print("TSM Bjergsen, na
+Torrda, eune
+Chalcedony, eune");
 		}
 	}
 }

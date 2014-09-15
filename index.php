@@ -1,6 +1,6 @@
 <?php 
 /*-- Including init (required files) -----------------------------------------*/
-require('../__init.php'); 
+require('__init.php'); 
 
 // If POST data exist, save them into SESSION data
 if (isset($_POST["players"]) && isset($_POST["table"])) 
