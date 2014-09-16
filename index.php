@@ -26,11 +26,11 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 
 	<div id="form" style="float:left;width:300px;margin-left:150px;">
 		<form action="./<?php Printer::printGetParameters(); ?>" method="post">
-		<h1>LoLScores (alpha)</h1>
+		<h1>LoLScores</h1>
 		<p><?php Printer::printVersion(); ?></p>
-		<textarea name="players" rows="20" cols="30"><?php Printer::printPlayers(); ?></textarea>
+		<textarea name="players" rows="20" cols="30" style="height:350px;"><?php Printer::printPlayers(); ?></textarea>
 		<br/>
-		Table:
+		<h3>Table:</h3>
 		<select name="table">
 			<?php
 				// create list of tables to choose from
