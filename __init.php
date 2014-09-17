@@ -22,6 +22,7 @@ Debugger::enable();
 /* -- Loading in secrets -----------------------------------------------------*/
 include_once('secrets/db.secret.php');      // Database credentials
 include_once('secrets/apikey.secret.php');  // API key
+include_once('secrets/const.secret.php');  // Host-specific constants
 
 /* -- Setting up database connection -----------------------------------------*/
 require('lib/dibi.min.php');
