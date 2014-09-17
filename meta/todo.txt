@@ -1,11 +1,8 @@
-priority 1
+﻿priority 1
 -----------
 - ranked stats
 - custom fields (win perc. etc) for them
-- security variable
 - hash v secretu na reset DB
-- global solve ritos fault (api call returns extra data)
-- logo
 - limit number of players (live deploy)
 - google analytics
 - example usage and better description for landing page
@@ -16,7 +13,6 @@ priority 2
 - vypisovat jen nektere sloupečky
 - add hash saved sets of players -> every request
 - selected hashes should not expire! (LCS player sets, etc)
-
 
 priority 3
 -----------
