@@ -230,7 +230,7 @@ class Player
 			$this->stats[$name]["id"] = $id;
 			$this->stats[$name]["region"] = $region;
 			$this->stats[$name]["name"] = $j[$id][0]["name"];
-			$this->stats[$name]["tier"] = $j[$id][0]["tier"];
+			$this->stats[$name]["tier"] = $this->t2i($j[$id][0]["tier"]);
 
 			foreach ($j[$id][0]["entries"] as $summary_name => $summary_value)
 			{
@@ -242,12 +242,6 @@ class Player
 						{
 							$stat_name = $this->camelToSnakeCase($stat_name);
 							$stat_value = $this->r2a($stat_value);
-							$this->stats[$name][$stat_name] = $stat_value;
-						}
-						else if ($stat_name == "division")
-						{
-							$stat_name = $this->camelToSnakeCase($stat_name);
-							$stat_value = $this->t2i($stat_value);
 							$this->stats[$name][$stat_name] = $stat_value;
 						}
 						else
@@ -455,7 +449,7 @@ class Player
     function t2i($tier) 
 	{
 		$tier = strtolower($tier);
-        switch ($roman) 
+        switch ($tier) 
 		{
             case "challenger": return 1;
             case "master": return 2;

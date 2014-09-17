@@ -8,7 +8,7 @@ class Group
     // array of players (filled with players)
     public $players = array();
 	
-	private $errors = array();
+	private $errors_player = array();
 	private $existing_players = array();
     
 	// status returned from call
@@ -102,7 +102,7 @@ class Group
 	}
     
 /*-- Function to load general stats from api and save them into players array */
-// also decides if player from region exists - failures in errors array
+// also decides if player from region exists - failures in errors_player array
     function loadFromAPI($summoners_sorted_array) 
 	{
         $players = array();
@@ -153,11 +153,11 @@ class Group
                     array_push($players, $player);
                     array_push($responded_names, $summoner_name);
                 }
-                $this->errors[$region] = array_diff($summoner_array, $responded_names);		// add to error input
+                $this->errors_player[$region] = array_diff($summoner_array, $responded_names);		// add to error input
             }
             else
             {
-                $this->errors[$region] = $summoner_array;
+                $this->errors_player[$region] = $summoner_array;
             }
 		}
         return $players;
@@ -203,9 +203,20 @@ class Group
         return $response;
     }
 	
-/*-- Function to print errors (wrong input of players) -----------------------*/
+/*-- Function to print errors (wrong input, etc ...) -------------------------*/
 	function getErrors()
 	{
+		$errors = array();
+		if (count($this->errors_player) != 0)
+		{
+			foreach ($this->errors_player as $region_name => $region_value)
+			{
+				foreach ($region_value as $summoner_name)
+				{
+					array_push($errors,"Missing player ".$summoner_name." from region ".$region_name.".\n");
+				}
+			}
+		}
 		return $this->errors;
 	}
 	
