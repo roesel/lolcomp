@@ -75,12 +75,12 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 					
 					Printer::printTable($header, $body);
 				}
-				
+				Printer::printErrors($group->getErrors());
 				
 			} else {
 				Printer::printIntro();
 			}
-				Printer::printErrors($group->getErrors());
+				
 			print('</div>');
 			
 		?>
