@@ -203,21 +203,21 @@ class Group
         return $response;
     }
 	
-/*-- Function to print errors (wrong input, etc ...) -------------------------*/
+/*-- Function to get errors (wrong input, etc ...) -------------------------*/
 	function getErrors()
 	{
-		$errors = array();
+		$errors = "";
 		if (count($this->errors_player) != 0)
 		{
 			foreach ($this->errors_player as $region_name => $region_value)
 			{
 				foreach ($region_value as $summoner_name)
 				{
-					array_push($errors,"Missing player ".$summoner_name." from region ".$region_name.".\n");
+					$errors = $errors."Failed to find player ".$summoner_name." from region ".$region_name.".<br />";
 				}
 			}
 		}
-		return $this->errors;
+		return $errors;
 	}
 	
 /*-- Function to print existing palyers --------------------------------------*/

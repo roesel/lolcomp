@@ -30,11 +30,6 @@ class Info
 	{
 		$header = array();
 		
-		// SELECT COLUMN_COMMENT, COLUMN_NAME FROM `information_schema`.`COLUMNS` 
-		// WHERE (TABLE_NAME = 'general' AND COLUMN_NAME = 'name') 
-		// OR  (TABLE_NAME = 'general' AND  COLUMN_NAME = 'id')
-		// OR TABLE_NAME = 'stats_aram_unranked5x5';
-		
 		$res = dibi::select('COLUMN_COMMENT, COLUMN_NAME')
 			->from('information_schema.COLUMNS')
 			->where('(TABLE_NAME = %s AND COLUMN_NAME = %s)', 'general', 'name')

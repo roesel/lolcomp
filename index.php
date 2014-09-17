@@ -80,7 +80,9 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 			} else {
 				Printer::printIntro();
 			}
+				Printer::printErrors($group->getErrors());
 			print('</div>');
+			
 		?>
 	</div>
 </body>

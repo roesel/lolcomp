@@ -110,13 +110,13 @@ Chalcedony, eune");
 	}
 	
 	/*-- Static function to print the errors list ----------------------------*/
-	static function printErrors()
+	static function printErrors($errors)
 	{
-		print('
-		<div class="errorbox">
-		Bla bla bla bla.
-		</div>
-		');
+		if ($errors!="") {
+			print('<div class="errorbox"><p><strong>Errors:</strong></p><p style="padding-left:15px;">');
+			print($errors);
+			print('</p></div>');
+		}
 	}
 }
 /*-- End ---------------------------------------------------------------------*/

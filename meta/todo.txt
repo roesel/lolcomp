@@ -1,10 +1,7 @@
 ﻿priority 1
 -----------
-- ranked stats
 - custom fields (win perc. etc) for them
-- hash v secretu na reset DB
 - limit number of players (live deploy)
-- google analytics
 - example usage and better description for landing page
 - error info (ccs3 overlay box?)
 
