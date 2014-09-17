@@ -44,24 +44,25 @@ class Player
 		{
 			if ($stat_name == 'revision_date')
 			{
-				$this->stats["general"][$stat_name] = $this->timeStampToNormal($stat_value/1000);
+				$this->stats["stats_general"][$stat_name] = $this->timeStampToNormal($stat_value/1000);
 			}
 			else
 			{
-				$this->stats["general"][$stat_name] = $stat_value;
+				$this->stats["stats_general"][$stat_name] = $stat_value;
 			}
 		}
 		$general_info = array();
-		$general_info["id"] = $this->stats["general"]["id"];
-		$general_info["id"] = $this->stats["general"]["region"];
-		$general_info["summoner_name"] = $this->stats["general"]["summoner_name"];
-		unset($this->stats["general"]["summoner_name"]);
+		$this->stats["general"]["id"] = $this->stats["stats_general"]["id"];
+		$this->stats["general"]["region"] = $this->stats["stats_general"]["region"];
+		$this->stats["general"]["summoner_name"] = $this->stats["stats_general"]["summoner_name"];
+		unset($this->stats["stats_general"]["summoner_name"]);
 
 		if (!$this->isInDatabaseGeneral())
 		{
-			$stats_general = $this->stats["general"];
-			$this->addToDatabase("stats_general", $stats_general);
-			$this->addToDatabase("general",$general_info);
+			$stats_general = $this->stats["stats_general"];
+			$general_help = $this->stats["general"];
+			$this->addToDatabase('stats_general', $stats_general);
+			$this->addToDatabase('general',$general_help);
 		}
 		else
 		{
@@ -73,11 +74,11 @@ class Player
 // also works to check if general exists
 	function isInDatabaseGeneral()
 	{
-		$table = "general";
+		$table = "stats_general";
 		
 		// get date-time info from database
-		$id = $this->stats["general"]["id"];
-		$region = $this->stats["general"]["region"];
+		$id = $this->stats["stats_general"]["id"];
+		$region = $this->stats["stats_general"]["region"];
 		$res = dibi::select('*')
 			->from($table)
 			->where('id = %i and region = %s', $id, $region)
@@ -112,8 +113,8 @@ class Player
 		$table = "general";
 		
 		// get date-time info from database
-		$id = $this->stats["general"]["id"];
-		$region = $this->stats["general"]["region"];
+		$id = $this->stats["stats_general"]["id"];
+		$region = $this->stats["stats_general"]["region"];
 		$res = dibi::select('*')
 			->from($table)
 			->where('id = %i and region = %s', $id, $region)
@@ -154,8 +155,8 @@ class Player
 	function loadStats()
 	{
 		// get stats by ID - wins,loses,kills,... in a bunch of modes
-		$id = $this->stats["general"]["id"];
-		$region = $this->stats["general"]["region"];
+		$id = $this->stats["stats_general"]["id"];
+		$region = $this->stats["stats_general"]["region"];
 
 		// get data from api
 		$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
@@ -211,8 +212,8 @@ class Player
     function loadRankedBasic() 
 	{
         // get ranked stats by ID - league, division name, ...
-		$id = $this->stats["general"]["id"];
-		$region = $this->stats["general"]["region"];
+		$id = $this->stats["stats_general"]["id"];
+		$region = $this->stats["stats_general"]["region"];
 		$name = "ranked_basic";
 
 		// get data from api
@@ -265,8 +266,8 @@ class Player
     function loadRankedStats() 
 	{
         // get detailed ranked stats by ID
-		$id = $this->stats["general"]["id"];
-		$region = $this->stats["general"]["region"];
+		$id = $this->stats["stats_general"]["id"];
+		$region = $this->stats["stats_general"]["region"];
 		$name = "ranked_stats";
         
 		// get data from api
@@ -309,7 +310,7 @@ class Player
 		}
 	}
 
-/*-- Function to add general into database -----------------------------------*/
+/*-- Function to add into database -------------------------------------------*/
 	function addToDatabase($name, $value)
 	{
 		dibi::insert($name, $value)
