@@ -1,6 +1,6 @@
 <?php 
-/*-- Including init (required files) -----------------------------------------*/
-// require('../__init.php');
+/*-- Security check -----------------------------------------*/
+if(!defined('WEBSECURITY')) exit;
  
 /*-- Class player, used to acquire stats about summoner ----------------------*/
 class Player
@@ -66,27 +66,6 @@ class Player
 // also works to check if general exists
 	function isInDatabaseGeneral()
 	{
-		// $table = "general";
-		
-		// get number of entries from database
-		// $id = $this->stats["general"]["id"];
-		// $region = $this->stats["general"]["region"];
-		// $res = dibi::select('*')
-			// ->from($table)
-			// ->where('id = %i and region = %s', $id, $region)
-			// ->execute();
-		// $result = $res->fetchAll();
-		// $returned_rows = sizeof($result);
-		
-		// check if entry already exists (number of rows is 1 or 0)
-		// if ($returned_rows == 0) 
-		// {
-			// return false;
-		// } 
-		// else 
-		// {
-			// return true;
-		// }
 		$table = "general";
 		
 		// get date-time info from database
@@ -173,7 +152,7 @@ class Player
 
 		// get data from api
 		$addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/summary?api_key='.API_KEY;
-        $data = $this->getCallResult($addr);//getData($addr);
+        $data = $this->getCallResult($addr);
 		
         if ($this->status == 200)
         {
@@ -301,19 +280,33 @@ class Player
 /*-- Function to add stats into database -------------------------------------*/
 	function addStatsToDatabase()
 	{
-		foreach ($this->stats as $stat_name => $stat_value)
+		foreach ($this->stats as $table_name => $table_value)
 		{
-			if($this->tableExists('stats_'.$stat_name))				// check if table exists for stats_*
+			if($this->tableExists('stats_'.$table_name))				// check if table exists for stats_*
 			{
-				dibi::insert('stats_'.$stat_name, $stat_value)
-					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
-					->execute();
+				foreach($table_value as $stat_name => $stat_value)
+				{
+					if (!$this->rowExists('stats_'.$table_name, $stat_name))		// check if row exists
+					{
+						unset($table_value[$stat_name]);
+					}
+				}
+				dibi::insert('stats_'.$table_name, $table_value)
+						->on('DUPLICATE KEY UPDATE %a ', $table_value)
+						->execute();
 			}
-			else if($this->tableExists($stat_name))					// check else if table exists for general,...
+			else if($this->tableExists($table_name))					// check else if table exists for general,...
 			{
-				dibi::insert($stat_name, $stat_value)
-					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
-					->execute();
+				foreach($table_value as $stat_name => $stat_value)
+				{
+					if (!$this->rowExists($table_name, $stat_name))		// check if row exists
+					{
+						unset($table_value[$stat_name]);
+					}
+				}
+				dibi::insert($table_name, $table_value)
+						->on('DUPLICATE KEY UPDATE %a ', $table_value)
+						->execute();
 			}
 		}
 	}
@@ -321,40 +314,66 @@ class Player
 /*-- Function to add ranked into database ------------------------------------*/
 	function addRankedToDatabase()
 	{
-		foreach ($this->stats as $stat_name => $stat_value)
+		foreach ($this->stats as $table_name => $table_value)
 		{
-			if($this->tableExists('ranked_'.$stat_name))			// check if table exists for ranked_*
+			if($this->tableExists('ranked_'.$table_name))						// check if table exists for stats_*
 			{
-				dibi::insert('ranked_'.$stat_name, $stat_value)
-					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
-					->execute();
+				foreach($table_value as $stat_name => $stat_value)
+				{
+					if (!$this->rowExists('ranked_'.$table_name, $stat_name))	// check if row exists
+					{
+						unset($table_value[$stat_name]);
+					}
+				}
+				dibi::insert('ranked_'.$table_name, $table_value)
+						->on('DUPLICATE KEY UPDATE %a ', $table_value)
+						->execute();
 			}
-			else if($this->tableExists($stat_name))					// check else if table exists for general,...
+			else if($this->tableExists($table_name))					// check else if table exists for general,...
 			{
-				dibi::insert($stat_name, $stat_value)
-					->on('DUPLICATE KEY UPDATE %a ', $stat_value)
-					->execute();
+				foreach($table_value as $stat_name => $stat_value)
+				{
+					if (!$this->rowExists($table_name, $stat_name))		// check if row exists
+					{
+						unset($table_value[$stat_name]);
+					}
+				}
+				dibi::insert($table_name, $table_value)
+						->on('DUPLICATE KEY UPDATE %a ', $table_value)
+						->execute();
 			}
 		}
 	}
 	
 /*-- Function to decide whether the table in database exists -----------------*/
-	function tableExists($tablename, $database = false) 
+	function tableExists($table_name) 
 	{
-		if(!$database)
-		{
-			$res = mysql_query("SELECT DATABASE()");
-			$database = mysql_result($res, 0);
-		}
-	 
-		$res = mysql_query("
-			SELECT COUNT(*) AS count
-			FROM information_schema.tables 
-			WHERE table_schema = '$database'
-			AND table_name = '$tablename'
-		");
-	 
-		return mysql_result($res, 0) == 1;
+		$res =(dibi::select('count(*)')
+			-> as('count')
+			-> from('information_schema.tables')
+			-> where('table_schema = %s', 'lolscores')
+			-> and ('table_name = %s', $table_name)
+			-> execute()
+		);
+			
+		$result = $res->fetchAll();
+		return $result[0]["count"];
+	}
+	
+/*-- Function to decide whether row in table exists --------------------------*/
+	function rowExists($table_name, $stat_name)
+	{
+		$res =(dibi::select('count(*)')
+			-> as('count')
+			-> from('information_schema.columns')
+			-> where('table_schema = %s', 'lolscores')
+			-> and ('table_name = %s', $table_name)
+			-> and('column_name = %s', $stat_name)
+			-> execute()
+		);
+
+		$result = $res->fetchAll();
+		return $result[0]["count"];
 	}
 	   
 /*-- Function to get data from api -------------------------------------------*/
