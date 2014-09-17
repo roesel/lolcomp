@@ -318,6 +318,7 @@ CREATE TABLE IF NOT EXISTS `ranked_stats` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
   `total_sessions_won` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  `win_ratio` int(255) NOT NULL DEFAULT '0' COMMENT 'KDA',
   `total_sessions_lost` int(255) NOT NULL DEFAULT '0' COMMENT 'Loses',
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Champion kills',
@@ -370,6 +371,7 @@ CREATE TABLE IF NOT EXISTS `general` (
   `summoner_level` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner level',
   `revision_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Revision date',
   `date_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Stats date',
+  `date_ranked_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General';
 

@@ -15,10 +15,13 @@ class Info
 	static function getAvailableTables()
 	{
 		$result = dibi::select('table_name, table_comment')
-			->from('information_schema.tables')
-			->where('table_schema = %s and table_name', 'lolscores')
-			->like('%s', 'stats\_%')
-			->execute();
+		   ->from('information_schema.tables')
+		   ->where('table_schema = %s', 'lolscores') 
+		   ->and('table_name')->like('%s', 'stats\_%')
+		   ->or('table_name')->like('%s', 'ranked\_%')
+		   ->or('table_name = %s', 'general')
+		   ->execute();
+
 		$result = $result->fetchAll();
 		return $result;
 	}

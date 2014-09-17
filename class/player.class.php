@@ -14,15 +14,15 @@ class Player
     function __construct($general)
     {
 		$this->getGeneral($general);
-		$this->check(1);
+		// $this->check(1);
 		$this->getStats();
-		$this->check(2);
+		// $this->check(2);
 		
 		// to do: ranked
 		
         // $this->loadRankedBasic();
         // $this->check(2);
-        // $this->loadRankedStats();
+        $this->loadRankedStats();
         // $this->check(3);
     }
 	
@@ -243,37 +243,41 @@ class Player
 		// get data from api
         $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/ranked?season=SEASON4&api_key='.API_KEY;    
         $data = $this->getCallResult($addr);
-        $j = json_decode($data, True);
         
-		foreach ($j["champions"] as $champion)
-		{
-			if ($champion["id"]=="0")
+		if ($this->status == 200)
+        {
+			$j = json_decode($data, True);
+			
+			foreach ($j["champions"] as $champion)
 			{
-				$combined = $champion["stats"];
+				if ($champion["id"]=="0")
+				{
+					$combined = $champion["stats"];
+				}
 			}
+			
+			$this->stats[$name] = array();
+			$this->stats[$name]["id"] = $id;
+			$this->stats[$name]["region"] = $region;
+			
+			foreach ($combined as $summary_name => $summary_value)
+			{
+				$summary_name = $this->camelToSnakeCase($summary_name);
+				$this->stats[$name][$summary_name] = $summary_value;
+			}
+			
+			$wins = $combined["totalSessionsWon"];
+			$losses = $combined["totalSessionsLost"];
+			$win_ratio = round(100*$wins/($wins+$losses),1);
+			
+			$this->stats[$name]["win_ratio"] = $win_ratio;
+			
+			// add time of creation of ranked_stats into stats["general"]
+			$this->stats["general"]['date_ranked_stats'] = $this->timeStampToNormal(time());
+			
+			// add received ranked_stats into database
+			$this->addRankedToDatabase();
 		}
-        
-		$this->stats[$name] = array();
-		$this->stats[$name]["id"] = $id;
-		$this->stats[$name]["region"] = $region;
-        
-		foreach ($combined as $summary_name => $summary_value)
-		{
-			$summary_name = $this->camelToSnakeCase($summary_name);
-			$this->stats[$name][$summary_name] = $summary_value;
-		}
-		
-        $wins = $combined["totalSessionsWon"];
-        $losses = $combined["totalSessionsLost"];
-        $win_ratio = round(100*$wins/($wins+$losses),1);
-		
-		$this->stats[$name]["win_ratio"] = $win_ratio;
-		
-		// add time of creation of ranked_stats into stats["general"]
-		$this->stats["general"]['date_ranked_stats'] = $this->timeStampToNormal(time());
-		
-		// add received ranked_stats into database
-		$this->addRankedToDatabase();
 	}
 
 /*-- Function to add general into database -----------------------------------*/
