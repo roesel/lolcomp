@@ -1,14 +1,24 @@
+priority 1
+-----------
+- ranked stats
+- security variable
+- hash v secretu na reset DB
+- global solve ritos fault (api call returns extra data)
+- logo
+- limit number of players (live deploy)
+- google analytics
+- example usage and better description for landing page
+
+priority 2
+-----------
+- vypisovat jen nektere sloupečky
+- add hash saved sets of players -> every request
+- selected hashes should not expire! (LCS player sets, etc)
+
+
+priority 3
+-----------
+- pretty designs
 - highlight current order value (maybe red color of triangle, and <strong> that specific header)
 - think about deleting outdated database rows
-- ranked stats
-- sorty na ně
-- global solve ritos fault (api call returns extra data)
-- pretty designs
-- hash v secretu na reset DB
-- constants to secret
-- security variable
-- vypisovat jen nektere sloupečky
-
-ideas:
-- add hash saved sets of players -> LCS players
-- autoload them with bucket so that theyre always live
+- autoload selected lists with bucket so that theyre always live
