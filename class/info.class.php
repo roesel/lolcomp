@@ -51,7 +51,8 @@ class Info
 	{
 		$existing_players = $group->getExistingPlayers();
 		
-		$t1_select = dibi::select("summoner_name, id")
+		$t1_select = dibi::select("summoner_name")
+			->as('name, id')
 			->as('id_general')
 			->from('general');
 		$t2_select = dibi::select("*")
