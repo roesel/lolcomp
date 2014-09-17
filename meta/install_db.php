@@ -3,8 +3,10 @@
 // This script uses .sql files that have to be UPDATED after every structural change to the database.
 define('WEBSECURITY', 'ok');
 require('../__init.php');
-
-dibi::loadFile('../sql/lolscores.sql');
-
-print("\n\nDB install is done.");
+if (isset($_GET["hash"]) && defined('SAFETY_HASH') && ($_GET["hash"]==SAFETY_HASH)) {
+	dibi::loadFile('../sql/lolscores.sql');
+	print("DB install is done.");
+} else {
+	print("Stop hacking pls.");
+}
 ?>

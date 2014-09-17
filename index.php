@@ -41,7 +41,7 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 					);
 				?>
 			</select>
-			<br/><input type="submit">
+			<br/><input type="submit" value="Submit" style="">
 			</form>
 		</div>
 		<?php

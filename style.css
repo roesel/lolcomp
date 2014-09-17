@@ -81,6 +81,7 @@ input[type=submit] {
     -moz-box-shadow: 1px 1px 3px #000;
     box-shadow: 1px 1px 3px #000;
     margin-right: 0.5em;
+	cursor:pointer;
 }
 input[type=reset] {
     width: auto;
@@ -168,7 +169,7 @@ background: -ms-linear-gradient(center top, #a00 0%, #600 100%);
 background: -o-linear-gradient(center top, #a00 0%, #600 100%);
 text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
 border-left: 1px solid rgba(0, 0, 0, 0.2);
-cursor: pointer;
+/*cursor: pointer;*/
 }
 
 th:first-child {
