@@ -20,7 +20,7 @@ class Player
 		
 		// to do: ranked
 		
-        // $this->loadRankedBasic();
+        $this->loadRankedBasic();
         // $this->check(2);
         $this->loadRankedStats();
         // $this->check(3);
@@ -208,27 +208,46 @@ class Player
         // get ranked stats by ID - league, division name, ...
 		$id = $this->stats["general"]["id"];
 		$region = $this->stats["general"]["region"];
+		$name = "ranked_basic";
 
 		// get data from api
-        $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v2.4/league/by-summoner/'.$id.'?api_key='.API_KEY;
-        $data = $this->getCallResult($addr);//getData($addr);
-        $j = json_decode($data, True);
+        $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v2.5/league/by-summoner/'.$id.'?api_key='.API_KEY;
+        $data = $this->getCallResult($addr);
         
-		$this->stats["ranked_basic"] = array();
-        $this->stats["ranked_basic"]["league"] = $j[$id][0]["name"];
-        $this->stats["ranked_basic"]["tier"] = $j[$id][0]["tier"];
-        $this->stats["ranked_basic"]["rank_roman"] = 0;
-        $this->stats["ranked_basic"]["lp"] = 0;
-        
-        foreach($j[$id][0]["entries"] as $num) 
-		{
-            if ($num["playerOrTeamId"]==$id)
+		if ($this->status == 200)
+        {
+			$j = json_decode($data, True);
+			
+			// dump($j[$id][0]);
+			// exit;
+			$this->stats[$name] = array();
+			$this->stats[$name]["id"] = $id;
+			$this->stats[$name]["region"] = $region;
+			$this->stats[$name]["name"] = $j[$id][0]["name"];
+			$this->stats[$name]["tier"] = $j[$id][0]["tier"];
+			// dump($j[$id][0]["entries"]);
+			// exit;
+			foreach ($j[$id][0]["entries"] as $summary_name => $summary_value)
 			{
-                $this->stats["ranked_basic"]["rank_roman"] = $num["division"];
-                $this->stats["ranked_basic"]["lp"] = $num["leaguePoints"];
-				$this->stats["ranked_basic"]["rank"] = $this->r2a($this->stats["ranked_basic"]["rank_roman"]);
-            }
-        }
+				if ($summary_name = "division")
+				{
+					$summary_name = $this->camelToSnakeCase($summary_name);
+					$summary_value = $this->r2a($summary_value);
+					$this->stats[$name][$summary_name] = $summary_value;
+				}
+				else
+				{
+					$summary_name = $this->camelToSnakeCase($summary_name);
+					$this->stats[$name][$summary_name] = $summary_value;
+				}
+			}
+		
+			// add time of creation of ranked_stats into stats["general"]
+			$this->stats["general"]['date_ranked_basic'] = $this->timeStampToNormal(time());
+			
+			// add received ranked_stats into database
+			$this->addRankedToDatabase();
+		}
     }
     
 /*-- Function to load ranked stats from api and save into private stats ------*/

@@ -351,9 +351,27 @@ CREATE TABLE IF NOT EXISTS `ranked_stats` (
   `bot_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Bot games played',
   `ranked_solo_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Ranked solo games played',
   `normal_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Normal games played',
-  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Ranked general stats';
+
+-- Export dat nebyl vybrán.
+
+-- Exportování struktury pro tabulka lolscores.unranked
+DROP TABLE IF EXISTS `ranked_basic`;
+CREATE TABLE IF NOT EXISTS `ranked_basic` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `tier` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Tier',
+  `name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name of league',
+  `league_points` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'LP',
+  `is_fresh_blood` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Fresh blood',
+  `is_hot_streak` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Hot Streak',
+  `division` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Division',
+  `is_inactive` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Inactive',
+  `is_veteran` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Veteran',
+  `wins` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  UNIQUE KEY `Index 1` (`id`,`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Ranked basic';
 
 -- Export dat nebyl vybrán.
 
@@ -366,12 +384,13 @@ DROP TABLE IF EXISTS `general`;
 CREATE TABLE IF NOT EXISTS `general` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
-  `name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name',
+  `summoner_name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name',
   `profile_icon_id` int(255) NOT NULL DEFAULT '0' COMMENT 'Profile icon',
   `summoner_level` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner level',
   `revision_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Revision date',
   `date_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Stats date',
-  `date_ranked_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked date',
+  `date_ranked_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked stats date',
+  `date_ranked_basics` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked basics date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General';
 
