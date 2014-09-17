@@ -103,9 +103,9 @@ Chalcedony, eune");
 	{
 		print('
 		<h1>How to start:</h1>
-		<h3 style="margin-top:50px;">&larr; 1. Input yourself and a few of your friends.</h3>
-		<h3 style="margin-top:400px;">&larr; 2. Select the type of statistics you\'d like to compare.</h3>
-		<h3 style="margin-top:35px;margin-left:-140px;">&larr; 3. Hit "Submit" and give us a few seconds.</h3>
+		<h3 style="margin-top:85px;margin-left:-50px;">&larr; 1. Input yourself and a few of your friends.</h3>
+		<h3 style="margin-top:400px;margin-left:-50px;">&larr; 2. Select the type of statistics you\'d like to compare.</h3>
+		<h3 style="margin-top:35px;margin-left:-190px;">&larr; 3. Hit "Submit" and give us a few seconds.</h3>
 		');
 	}
 }
