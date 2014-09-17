@@ -57,7 +57,7 @@ class Printer
 			print("<tr>");
 			foreach ($names as $name => $value)
 			{
-				if (($name != 'id') && ($name != 'id_general'))
+				if (($name != 'id') && ($name != 'id_general') && ($col_id != 'name_general'))
 				{
 					print("<td>".$value."</td>");
 				}

@@ -140,7 +140,7 @@ class Group
                     $this->insertIntoDatabase($id, $name, $region);
                     
                     $player_init_array = array(
-                        "name"					=> $name,
+                        "summoner_name"			=> $name,
                         "region"                => $region,
                         "id"                    => $id,
                         "profile_icon_id"       => $profile_icon_id,
