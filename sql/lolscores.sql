@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `stats_ranked_solo5x5` (
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
   `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
   UNIQUE KEY `Index 1` (`id`,`region`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Solo ranked 5v5';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Solo/Duo ranked 5v5';
 
 -- Export dat nebyl vybrán.
 
@@ -309,6 +309,50 @@ CREATE TABLE IF NOT EXISTS `stats_u_r_f` (
   `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='URF';
+
+-- Export dat nebyl vybrán.
+
+-- Exportování struktury pro tabulka lolscores.unranked
+DROP TABLE IF EXISTS `ranked_stats`;
+CREATE TABLE IF NOT EXISTS `ranked_stats` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `total_sessions_won` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
+  `total_sessions_lost` int(255) NOT NULL DEFAULT '0' COMMENT 'Loses',
+  `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
+  `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Champion kills',
+  `total_physical_damage_dealt` int(255) NOT NULL DEFAULT '0' COMMENT 'Physical damage dealt',
+  `total_magic_damage_dealt` int(255) NOT NULL DEFAULT '0' COMMENT 'Magic damage dealt',
+  `total_damage_dealt` int(255) NOT NULL DEFAULT '0' COMMENT 'Damage dealt',
+  `total_damage_taken` int(255) NOT NULL DEFAULT '0' COMMENT 'Damage taken',
+  `total_deaths_per_session` int(255) NOT NULL DEFAULT '0' COMMENT 'Deaths per session',
+  `total_sessions_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Sessions played',
+  `total_minion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Minion kills',
+  `total_turrets_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Turrets',
+  `total_neutral_minions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Neutral minions killed',
+  `total_heal` int(255) NOT NULL DEFAULT '0' COMMENT 'Heal',
+  `total_gold_earned` int(255) NOT NULL DEFAULT '0' COMMENT 'Gold earned',
+  `total_first_blood` int(255) NOT NULL DEFAULT '0' COMMENT 'First blood',
+  `total_double_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Double kills',
+  `total_triple_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Triple kills',
+  `total_quadra_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Quadra kills',
+  `total_penta_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Penta kills',
+  `total_unreal_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Unreal kills',
+  `killing_spree` int(255) NOT NULL DEFAULT '0' COMMENT 'Total killing spree',
+  `max_champions_killed` int(255) NOT NULL DEFAULT '0' COMMENT 'Max kills',
+  `max_largest_critical_strike` int(255) NOT NULL DEFAULT '0' COMMENT 'Largest critical strike',
+  `max_largest_killing_spree` int(255) NOT NULL DEFAULT '0' COMMENT 'Largest killing spree',
+  `max_time_spent_living` int(255) NOT NULL DEFAULT '0' COMMENT 'Max time spent living',
+  `max_time_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Max time played',
+  `max_num_deaths` int(255) NOT NULL DEFAULT '0' COMMENT 'Max number of deaths',
+  `most_champion_kills_per_session` int(255) NOT NULL DEFAULT '0' COMMENT 'Most champion kills',
+  `ranked_premade_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Ranked premade games played',
+  `bot_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Bot games played',
+  `ranked_solo_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Ranked solo games played',
+  `normal_games_played` int(255) NOT NULL DEFAULT '0' COMMENT 'Normal games played',
+  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Modify date',
+  UNIQUE KEY `Index 1` (`id`,`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Ranked general stats';
 
 -- Export dat nebyl vybrán.
 

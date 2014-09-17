@@ -54,7 +54,9 @@ class Player
 
 		if (!$this->isInDatabaseGeneral())
 		{
-			$this->addGeneralToDatabase();
+			$name = "general";
+			$value = $this->stats["general"];
+			$this->addToDatabase($name, $general);
 		}
 		else
 		{
@@ -236,42 +238,47 @@ class Player
         // get detailed ranked stats by ID
 		$id = $this->stats["general"]["id"];
 		$region = $this->stats["general"]["region"];
+		$name = "ranked_stats";
         
 		// get data from api
         $addr = 'http://'.$region.'.api.pvp.net/api/lol/'.$region.'/v1.3/stats/by-summoner/'.$id.'/ranked?season=SEASON4&api_key='.API_KEY;    
-        $data = $this->getCallResult($addr);//getData($addr);
+        $data = $this->getCallResult($addr);
         $j = json_decode($data, True);
         
 		foreach ($j["champions"] as $champion)
 		{
 			if ($champion["id"]=="0")
 			{
-				$combined = $champion;
+				$combined = $champion["stats"];
 			}
 		}
+        
+		$this->stats[$name] = array();
+		$this->stats[$name]["id"] = $id;
+		$this->stats[$name]["region"] = $region;
+        
+		foreach ($combined as $summary_name => $summary_value)
+		{
+			$summary_name = $this->camelToSnakeCase($summary_name);
+			$this->stats[$name][$summary_name] = $summary_value;
+		}
 		
-        $s = $combined["stats"];
-        
-		$this->stats["ranked_stats"] = array();
-        
-        $wins = $s["totalSessionsWon"];
-        $losses = $s["totalSessionsLost"];
+        $wins = $combined["totalSessionsWon"];
+        $losses = $combined["totalSessionsLost"];
+        $win_ratio = round(100*$wins/($wins+$losses),1);
 		
-        $wratio = round(100*$wins/($wins+$losses),1);
-        
-        $this->stats["ranked_stats"]["Pentas"] = $s["totalPentaKills"];
-        $this->stats["ranked_stats"]["Win ratio"] = $wratio." %";
-        $this->stats["ranked_stats"]["Kills"] = $s["totalChampionKills"];
-        $this->stats["ranked_stats"]["Assists"] = $s["totalAssists"];
-        $this->stats["ranked_stats"]["Max Spree"] = $s["maxLargestKillingSpree"];
+		$this->stats[$name]["win_ratio"] = $win_ratio;
+		
+		// add time of creation of ranked_stats into stats["general"]
+		$this->stats["general"]['date_ranked_stats'] = $this->timeStampToNormal(time());
+		
+		// add received ranked_stats into database
+		$this->addRankedToDatabase();
 	}
 
 /*-- Function to add general into database -----------------------------------*/
-	function addGeneralToDatabase()
+	function addToDatabase($name, $value)
 	{
-		$name = "general";
-		$value = $this->stats["general"];
-		
 		dibi::insert($name, $value)
 				->on('DUPLICATE KEY UPDATE %a ', $value)
 				->execute();
@@ -291,9 +298,7 @@ class Player
 						unset($table_value[$stat_name]);
 					}
 				}
-				dibi::insert('stats_'.$table_name, $table_value)
-						->on('DUPLICATE KEY UPDATE %a ', $table_value)
-						->execute();
+				$this->addToDatabase('stats_'.$table_name, $table_value);
 			}
 			else if($this->tableExists($table_name))					// check else if table exists for general,...
 			{
@@ -304,9 +309,7 @@ class Player
 						unset($table_value[$stat_name]);
 					}
 				}
-				dibi::insert($table_name, $table_value)
-						->on('DUPLICATE KEY UPDATE %a ', $table_value)
-						->execute();
+				$this->addToDatabase($table_name, $table_value);
 			}
 		}
 	}
@@ -325,9 +328,7 @@ class Player
 						unset($table_value[$stat_name]);
 					}
 				}
-				dibi::insert('ranked_'.$table_name, $table_value)
-						->on('DUPLICATE KEY UPDATE %a ', $table_value)
-						->execute();
+				$this->addToDatabase('ranked_'.$table_name, $table_value);
 			}
 			else if($this->tableExists($table_name))					// check else if table exists for general,...
 			{
@@ -338,9 +339,7 @@ class Player
 						unset($table_value[$stat_name]);
 					}
 				}
-				dibi::insert($table_name, $table_value)
-						->on('DUPLICATE KEY UPDATE %a ', $table_value)
-						->execute();
+				$this->addToDatabase($table_name, $table_value);
 			}
 		}
 	}
