@@ -380,11 +380,10 @@ CREATE TABLE IF NOT EXISTS `ranked_basic` (
 
 
 -- Exportování struktury pro tabulka lolscores.general
-DROP TABLE IF EXISTS `general`;
-CREATE TABLE IF NOT EXISTS `general` (
+DROP TABLE IF EXISTS `stats_general`;
+CREATE TABLE IF NOT EXISTS `stats_general` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
-  `summoner_name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name',
   `profile_icon_id` int(255) NOT NULL DEFAULT '0' COMMENT 'Profile icon',
   `summoner_level` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner level',
   `revision_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Revision date',
@@ -396,6 +395,17 @@ CREATE TABLE IF NOT EXISTS `general` (
 
 -- Export dat nebyl vybrán.
 
+-- Exportování struktury pro tabulka lolscores.general
+DROP TABLE IF EXISTS `general`;
+CREATE TABLE IF NOT EXISTS `general` (
+  `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
+  `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
+  `summoner_name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name',
+  UNIQUE KEY `Index 1` (`id`,`region`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General help';
+
+-- Export dat nebyl vybrán.
+
 -- Exportování struktury pro tabulka lolscores.group
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE IF NOT EXISTS `group` (
@@ -404,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `group` (
   `codename` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Codename',
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last updated',
   UNIQUE KEY `Index 1` (`region`,`codename`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ROW_FORMAT=COMPACT COMMENT='General';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ROW_FORMAT=COMPACT COMMENT='Group';
 
 -- Export dat nebyl vybrán.
 

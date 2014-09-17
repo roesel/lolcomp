@@ -51,12 +51,17 @@ class Player
 				$this->stats["general"][$stat_name] = $stat_value;
 			}
 		}
+		$general_info = array();
+		$general_info["id"] = $this->stats["general"]["id"];
+		$general_info["id"] = $this->stats["general"]["region"];
+		$general_info["summoner_name"] = $this->stats["general"]["summoner_name"];
+		unset($this->stats["general"]["summoner_name"]);
 
 		if (!$this->isInDatabaseGeneral())
 		{
-			$name = "general";
-			$value = $this->stats["general"];
-			$this->addToDatabase($name, $general);
+			$stats_general = $this->stats["general"];
+			$this->addToDatabase("stats_general", $stats_general);
+			$this->addToDatabase("general",$general_info);
 		}
 		else
 		{
