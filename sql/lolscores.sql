@@ -361,7 +361,7 @@ DROP TABLE IF EXISTS `ranked_basic`;
 CREATE TABLE IF NOT EXISTS `ranked_basic` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
-  `tier` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Tier',
+  `tier` int(255) NOT NULL DEFAULT '0' COMMENT 'Tier',
   `name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name of league',
   `league_points` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'LP',
   `is_fresh_blood` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Fresh blood',

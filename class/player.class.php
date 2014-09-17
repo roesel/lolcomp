@@ -244,6 +244,12 @@ class Player
 							$stat_value = $this->r2a($stat_value);
 							$this->stats[$name][$stat_name] = $stat_value;
 						}
+						else if ($stat_name == "division")
+						{
+							$stat_name = $this->camelToSnakeCase($stat_name);
+							$stat_value = $this->t2i($stat_value);
+							$this->stats[$name][$stat_name] = $stat_value;
+						}
 						else
 						{
 							$stat_name = $this->camelToSnakeCase($stat_name);
@@ -441,6 +447,23 @@ class Player
             case "III": return 3;
             case "IV": return 4;
             case "V": return 5;
+            default: return 0;
+        }
+    }
+	
+/*-- Function to convert tier into integer -----------------------------------*/
+    function t2i($tier) 
+	{
+		$tier = strtolower($tier);
+        switch ($roman) 
+		{
+            case "challenger": return 1;
+            case "master": return 2;
+            case "diamond": return 3;
+            case "platina": return 4;
+            case "gold": return 5;
+			case "silver": return 6;
+            case "bronze": return 7;
             default: return 0;
         }
     }
