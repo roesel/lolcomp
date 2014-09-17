@@ -24,6 +24,14 @@ class Group
         }
     }
 	
+	function isEmpty() {
+		if (count($this->existing_players)==0) {
+			return True;
+		} else {
+			return False;
+		}
+	}
+	
 /*-- Function to parse input names and regions -------------------------------*/
 	function smartParse($string_input)
 	{
@@ -40,20 +48,21 @@ class Group
 		// Cycle that will go through all summoners and sort them into their regions
 		foreach ($summoners_array as $summoner_and_region) {  // For each summoner
 			$explode = explode(",", $summoner_and_region);  // Explode by "," (separate summoner and region)
-			
-			// Properly name variables for future use
-			$summoner = strtolower(preg_replace('/\s+/', '', $explode[0])); // remove all whitespace characters and convert to lowercase
-			$region = strtolower($explode[1]);
-			
-			// If the player doesn't exist in the database (and data is fresh!)
-			if (!$this->isInDatabase($summoner, $region)) {
-				// If that region does not exist yet, create it
-				if(!isset($summoners_sorted_array[$region])) {
-					$summoners_sorted_array[$region] = array();
-				} 
+			if (isset($explode[0]) && isset($explode[1])) {
+				// Properly name variables for future use
+				$summoner = strtolower(preg_replace('/\s+/', '', $explode[0])); // remove all whitespace characters and convert to lowercase
+				$region = strtolower($explode[1]);
 				
-				// Push into region (has to exist due to previous if)
-				array_push($summoners_sorted_array[$region], $summoner);
+				// If the player doesn't exist in the database (and data is fresh!)
+				if (!$this->isInDatabase($summoner, $region)) {
+					// If that region does not exist yet, create it
+					if(!isset($summoners_sorted_array[$region])) {
+						$summoners_sorted_array[$region] = array();
+					} 
+					
+					// Push into region (has to exist due to previous if)
+					array_push($summoners_sorted_array[$region], $summoner);
+				}
 			}
 		}
 		return $summoners_sorted_array;

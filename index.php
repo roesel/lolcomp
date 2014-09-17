@@ -23,44 +23,52 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 </head>
 <body style="background:url(img/background.jpg);color:white;">
 	<div id="wrapper" style="width:1700px;text-align:left;margin-left:auto;margin-right:auto;">
-
-	<div id="form" style="float:left;width:300px;margin-left:150px;">
-		<form action="./<?php Printer::printGetParameters(); ?>" method="post">
-		<h1>LoLScores</h1>
-		<p><?php Printer::printVersion(); ?></p>
-		<textarea name="players" rows="20" cols="30" style="height:350px;"><?php Printer::printPlayers(); ?></textarea>
-		<br/>
-		<h3>Table:</h3>
-		<select name="table">
-			<?php
-				// create list of tables to choose from
-				Printer::printAvailableTables(
-					Info::getAvailableTables()
-				);
-			?>
-		</select>
-		<br/><input type="submit">
-		</form>
-	</div>
-	<?php
-	/*-- Create table of players, according to chosen type of game ---------------*/
-		if (isset($_SESSION["players"]) && isset($_SESSION["table"]))
-		{
-			$input = $_SESSION["players"];
-			$table = $_SESSION["table"];
-
-			$group = new Group($input);
-			
+		<div id="form" style="float:left;width:300px;margin-left:150px;">
+			<form action="./<?php Printer::printGetParameters(); ?>" method="post">
+			<h1>LoLScores</h1>
+			<p><?php Printer::printVersion(); ?></p>
+			<textarea name="players" rows="20" cols="30" style="height:350px;"><?php Printer::printPlayers(); ?></textarea>
+			<br/>
+			<h3>Table:</h3>
+			<select name="table">
+				<?php
+					// create list of tables to choose from
+					Printer::printAvailableTables(
+						Info::getAvailableTables()
+					);
+				?>
+			</select>
+			<br/><input type="submit">
+			</form>
+		</div>
+		<?php
+		/*-- Create table of players, according to chosen type of game ---------------*/
 			print('<div id="print" style="float:left;width:700px;">');
 			
-			$header = Info::createTableHeader($table);
-			$body = Info::createTableBody($table,$group);
-			
-			Printer::printTable($header, $body);
-			
+			if (isset($_SESSION["players"]) && isset($_SESSION["table"]))
+			{
+				$input = $_SESSION["players"];
+				$table = $_SESSION["table"];
+
+				$group = new Group($input);
+				
+				
+				
+				if ($group->isEmpty()) {
+					Printer::printIntro();
+				} else {
+					$header = Info::createTableHeader($table);
+					$body = Info::createTableBody($table,$group);
+					
+					Printer::printTable($header, $body);
+				}
+				
+				
+			} else {
+				Printer::printIntro();
+			}
 			print('</div>');
-		} 
-	?>
+		?>
 	</div>
 </body>
 </html>

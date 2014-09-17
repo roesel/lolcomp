@@ -1,63 +1,4 @@
-a {
-color:white;
-}
 
-table {
-white-space: nowrap;
-border-collapse: collapse;
-}
-
-td, th {
-display: table-cell;
-vertical-align: inherit;
-}
-
-th {
-height: 17px;
-line-height: 17px;
-text-align: center;
-font-weight: bold;
-font-size: 12px;
-padding: 4px 6px;
-color: rgb(255, 255, 255);
-background-color: #a00;
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #a00), color-stop(1.0, #600));
-background: -webkit-linear-gradient(center top, #a00 0%, #600 100%);
-background: -moz-linear-gradient(center top, #a00 0%, #600 100%);
-background: -ms-linear-gradient(center top, #a00 0%, #600 100%);
-background: -o-linear-gradient(center top, #a00 0%, #600 100%);
-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-border-left: 1px solid rgba(0, 0, 0, 0.2);
-cursor: pointer;
-}
-
-th:first-child {
-border-left: none;
-border-radius: 6px 0 0 0;
-}
-
-th:last-child {
-border-right: none;
-border-radius: 0 6px 0 0;
-}
-
-tr:nth-child(odd) td {
-background-color: #222222;
-}
-
-tr:nth-child(even) td {
-background-color: #292929;
-}
-
-td {
-border-left: 1px solid rgba(0, 0, 0, 0.2);
-text-align: center;
-padding: 6px 4px;
-font-size: 12px;
-border-top: 1px solid #1D1D1D;
-}
-
-/* ------------------------------------------------------------------------------------------------------------*/
 /* style fo forms? */
 body {
     background: #222;
@@ -68,7 +9,7 @@ body {
 }
     body * {
         margin: 10px;
-        padding: 10px;
+        padding: 0px;
         font-family: helvetica, sans-serif;
     }
 p {
@@ -196,3 +137,64 @@ input[type=radio]:checked {
     -o-background-size: 28px 28px;
     background-size: 28px 28px;
 }
+
+a {
+color:white;
+}
+
+table {
+white-space: nowrap;
+border-collapse: collapse;
+}
+
+td, th {
+display: table-cell;
+vertical-align: inherit;
+}
+
+th {
+height: 17px;
+line-height: 17px;
+text-align: center;
+font-weight: bold;
+font-size: 12px;
+padding: 4px 6px;
+color: rgb(255, 255, 255);
+background-color: #a00;
+background: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #a00), color-stop(1.0, #600));
+background: -webkit-linear-gradient(center top, #a00 0%, #600 100%);
+background: -moz-linear-gradient(center top, #a00 0%, #600 100%);
+background: -ms-linear-gradient(center top, #a00 0%, #600 100%);
+background: -o-linear-gradient(center top, #a00 0%, #600 100%);
+text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+border-left: 1px solid rgba(0, 0, 0, 0.2);
+cursor: pointer;
+}
+
+th:first-child {
+border-left: none;
+border-radius: 6px 0 0 0;
+}
+
+th:last-child {
+border-right: none;
+border-radius: 0 6px 0 0;
+}
+
+tr:nth-child(odd) td {
+background-color: #222222;
+}
+
+tr:nth-child(even) td {
+background-color: #292929;
+}
+
+td {
+border-left: 1px solid rgba(0, 0, 0, 0.2);
+text-align: center;
+padding: 6px 4px;
+font-size: 12px;
+border-top: 1px solid #1D1D1D;
+}
+
+/* ------------------------------------------------------------------------------------------------------------*/

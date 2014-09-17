@@ -39,9 +39,9 @@ class Printer
 			if ($col_id != 'id') 
 			{
 				print('<th>'.$col_name);
-				print('
-						<a href="./?orderby='.$col_id.'&way=desc">&blacktriangledown;</a>
-						<a href="./?orderby='.$col_id.'&way=asc"> &blacktriangle;  </a>
+				print('<br/>
+						<a href="./?orderby='.$col_id.'&way=desc" class="arrd">&blacktriangledown;</a>
+						<a href="./?orderby='.$col_id.'&way=asc" class="arru"> &blacktriangle;  </a>
 						</th>'
 				);
 			}
@@ -92,7 +92,18 @@ Chalcedony, eune");
 	}
 	
 	static function printVersion() {
-		print('version: <strike>0.002</strike> haha');
+		print('version: <strike>0.003</strike> hihi');
+	}
+	
+	/*-- Static function to print ordering of table ------------------------------*/
+	static function printIntro()
+	{
+		print('
+		<h1>How to start:</h1>
+		<h3 style="margin-top:50px;">&larr; 1. Input yourself and a few of your friends.</h3>
+		<h3 style="margin-top:400px;">&larr; 2. Select the type of statistics you\'d like to compare.</h3>
+		<h3 style="margin-top:35px;margin-left:-140px;">&larr; 3. Hit "Submit" and give us a few seconds.</h3>
+		');
 	}
 }
 /*-- End ---------------------------------------------------------------------*/
