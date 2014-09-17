@@ -19,7 +19,6 @@ class Info
 		   ->where('table_schema = %s', 'lolscores') 
 		   ->and('table_name')->like('%s', 'stats\_%')
 		   ->or('table_name')->like('%s', 'ranked\_%')
-		   ->or('table_name = %s', 'general')
 		   ->execute();
 
 		$result = $result->fetchAll();
@@ -51,7 +50,8 @@ class Info
 	{
 		$existing_players = $group->getExistingPlayers();
 		
-		$t1_select = dibi::select('name, id')
+		$t1_select = dibi::select('summoner_name')
+			->as('name, id')
 			->as('id_general')
 			->from('general');
 		$t2_select = dibi::select("*")
@@ -81,6 +81,7 @@ class Info
 				}
 			}
 		}
+		print($res);exit;
 		$res = $res->execute();
 		$body = $res->fetchAll();
 		return $body;
