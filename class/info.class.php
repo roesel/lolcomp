@@ -42,6 +42,9 @@ class Info
 			->or('(TABLE_NAME = %s)', $table)
 			->execute();
 		$header = $res->fetchAll();
+		// Changing header so that it fits the JOINed select
+		$header[1]['COLUMN_COMMENT'] = 'Summoner name';  
+		$header[1]['COLUMN_NAME']    = 'summoner_name';
 		return $header;
 	}
 	
@@ -50,8 +53,7 @@ class Info
 	{
 		$existing_players = $group->getExistingPlayers();
 		
-		$t1_select = dibi::select('summoner_name')
-			->as('name, id')
+		$t1_select = dibi::select('summoner_name, id')
 			->as('id_general')
 			->from('general');
 		$t2_select = dibi::select("*")

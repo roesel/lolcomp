@@ -98,7 +98,7 @@ Chalcedony, eune");
 		print('version: <strike>0.003</strike> hihi');
 	}
 	
-	/*-- Static function to print ordering of table ------------------------------*/
+	/*-- Static function to print the basic usage of the app -----------------*/
 	static function printIntro()
 	{
 		print('
@@ -106,6 +106,16 @@ Chalcedony, eune");
 		<h3 style="margin-top:85px;margin-left:-50px;">&larr; 1. Input yourself and a few of your friends.</h3>
 		<h3 style="margin-top:400px;margin-left:-50px;">&larr; 2. Select the type of statistics you\'d like to compare.</h3>
 		<h3 style="margin-top:35px;margin-left:-190px;">&larr; 3. Hit "Submit" and give us a few seconds.</h3>
+		');
+	}
+	
+	/*-- Static function to print the errors list ----------------------------*/
+	static function printErrors()
+	{
+		print('
+		<div class="errorbox">
+		Bla bla bla bla.
+		</div>
 		');
 	}
 }
