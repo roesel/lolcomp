@@ -225,25 +225,30 @@ class Player
 			$this->stats[$name]["region"] = $region;
 			$this->stats[$name]["name"] = $j[$id][0]["name"];
 			$this->stats[$name]["tier"] = $j[$id][0]["tier"];
-			// dump($j[$id][0]["entries"]);
-			// exit;
+
 			foreach ($j[$id][0]["entries"] as $summary_name => $summary_value)
 			{
-				if ($summary_name = "division")
+				if($summary_value["playerOrTeamId"] == $id)
 				{
-					$summary_name = $this->camelToSnakeCase($summary_name);
-					$summary_value = $this->r2a($summary_value);
-					$this->stats[$name][$summary_name] = $summary_value;
-				}
-				else
-				{
-					$summary_name = $this->camelToSnakeCase($summary_name);
-					$this->stats[$name][$summary_name] = $summary_value;
+					foreach($summary_value as $stat_name => $stat_value)
+					{
+						if ($stat_name == "division")
+						{
+							$stat_name = $this->camelToSnakeCase($stat_name);
+							$stat_value = $this->r2a($stat_value);
+							$this->stats[$name][$stat_name] = $stat_value;
+						}
+						else
+						{
+							$stat_name = $this->camelToSnakeCase($stat_name);
+							$this->stats[$name][$stat_name] = $stat_value;
+						}
+					}
 				}
 			}
 		
 			// add time of creation of ranked_stats into stats["general"]
-			$this->stats["general"]['date_ranked_basic'] = $this->timeStampToNormal(time());
+			$this->stats["general"]['date_ranked_basics'] = $this->timeStampToNormal(time());
 			
 			// add received ranked_stats into database
 			$this->addRankedToDatabase();
