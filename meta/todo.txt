@@ -1,6 +1,7 @@
 priority 1
 -----------
 - ranked stats
+- custom fields (win perc. etc) for them
 - security variable
 - hash v secretu na reset DB
 - global solve ritos fault (api call returns extra data)
@@ -8,6 +9,7 @@ priority 1
 - limit number of players (live deploy)
 - google analytics
 - example usage and better description for landing page
+- error info (ccs3 overlay box?)
 
 priority 2
 -----------
@@ -18,6 +20,7 @@ priority 2
 
 priority 3
 -----------
+- player aliases
 - pretty designs
 - highlight current order value (maybe red color of triangle, and <strong> that specific header)
 - think about deleting outdated database rows

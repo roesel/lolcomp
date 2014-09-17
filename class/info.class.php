@@ -1,6 +1,6 @@
 <?php
-/*-- Including init (required files) -----------------------------------------*/
-// require('../__init.php');
+/*-- Security check -----------------------------------------*/
+if(!defined('WEBSECURITY')) exit;
 
 /*-- Static class info, used get informations from database -----------------*/ 
 class Info

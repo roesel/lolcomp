@@ -2,7 +2,7 @@
 /* -- Init script for lolscores - setting you up with everything you need. --*/
 
 /* -- Setting safety variable ------------------------------------------------*/
-// todo - safety variable - if not set, exit.
+if(!defined('WEBSECURITY')) exit;
 
 /* -- Setting safety variable ------------------------------------------------*/
 header('Content-type: text/html; charset=utf-8');

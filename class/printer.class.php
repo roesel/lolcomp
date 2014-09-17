@@ -1,4 +1,7 @@
 <?php 
+/*-- Security check -----------------------------------------*/
+if(!defined('WEBSECURITY')) exit;
+
 /*-- Static class printer, used to print html code ---------------------------*/
 class Printer
 {
