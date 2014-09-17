@@ -387,9 +387,6 @@ CREATE TABLE IF NOT EXISTS `stats_general` (
   `profile_icon_id` int(255) NOT NULL DEFAULT '0' COMMENT 'Profile icon',
   `summoner_level` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner level',
   `revision_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Revision date',
-  `date_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Stats date',
-  `date_ranked_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked stats date',
-  `date_ranked_basics` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked basics date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General';
 
@@ -401,6 +398,9 @@ CREATE TABLE IF NOT EXISTS `general` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
   `summoner_name` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Name',
+  `date_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Stats date',
+  `date_ranked_stats` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked stats date',
+  `date_ranked_basics` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Ranked basics date',
   UNIQUE KEY `Index 1` (`id`,`region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='General help';
 

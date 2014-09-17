@@ -81,7 +81,7 @@ class Info
 				}
 			}
 		}
-		print($res);exit;
+		// print($res);exit;
 		$res = $res->execute();
 		$body = $res->fetchAll();
 		return $body;
