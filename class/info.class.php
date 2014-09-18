@@ -25,9 +25,11 @@ class Info
 		return $result;
 	}
 	
-/*-- Static function to create table header ----------------------------------*/
-	static function createTableHeader($table)
+/*-- Static function to create table -----------------------------------------*/
+// both header and body
+	static function createTable($table, $group)
 	{
+		// header
 		$header = array();
 		
 		$res = dibi::select('COLUMN_COMMENT, COLUMN_NAME')
@@ -37,15 +39,12 @@ class Info
 			->or('(TABLE_NAME = %s)', $table)
 			->execute();
 		$header = $res->fetchAll();
+		
 		// Changing header so that it fits the JOINed select
 		$header[1]['COLUMN_COMMENT'] = 'Summoner name';  
 		$header[1]['COLUMN_NAME']    = 'summoner_name';
-		return $header;
-	}
-	
-/*-- Static function to create table body ------------------------------------*/
-	static function createTableBody($table, $group)
-	{
+		
+		// body
 		$existing_players = $group->getExistingPlayers();
 		
 		$t1_select = dibi::select('summoner_name, id')
@@ -61,11 +60,18 @@ class Info
 			->on('t1.id_general = t2.id')
 			->where('( id, region) ')
 			->in($existing_players);
+			
+		// create column names to check if table can be ordered
+		$column_names = array();
+		foreach ($header as $column)
+		{
+			array_push($column_names, $column["COLUMN_NAME"]);
+		}
 
 		// check if ordering is set and according to it, rearrange selection from database
-		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"])) 
+		if (isset($_SESSION["orderby"]) && isset($_SESSION["way"]))
 		{
-			if (isset($_SESSION["orderby"]) && isset($_SESSION["way"]))
+			if (in_array($_SESSION["orderby"], $column_names))
 			{
 				$res=$res->orderBy($_SESSION["orderby"]);
 				if ($_SESSION["way"]=="asc")
@@ -78,10 +84,12 @@ class Info
 				}
 			}
 		}
-		// print($res);exit;
+
 		$res = $res->execute();
 		$body = $res->fetchAll();
-		return $body;
+		
+		$table_elements = array($header, $body);
+		return $table_elements;
 	}
 }
 /*-- End ---------------------------------------------------------------------*/

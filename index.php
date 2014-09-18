@@ -67,17 +67,24 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 				
 				
 				
-				if ($group->isEmpty()) {
+				if ($group->isEmpty())
+				{
 					Printer::printIntro();
-				} else {
-					$header = Info::createTableHeader($table);
-					$body = Info::createTableBody($table,$group);
+				} 
+				else 
+				{
+					// elements of table - header and body
+					$table_elements = Info::createTable($table,$group);
 					
-					Printer::printTable($header, $body);
+					// print whole table
+					Printer::printTable($table_elements);
 				}
+				// print errors
 				Printer::printErrors($group->getErrors());
 				
-			} else {
+			} 
+			else 
+			{
 				Printer::printIntro();
 			}
 				

@@ -6,4 +6,6 @@ const API_REQUEST_WAIT = 100000;    // time in microseconds to wait for call
 const WEB_ROOT = "http://localhost/";  // http address of root folder
 const DATABASE_NAME = "lolscores"; // name of database
 const SAFETY_HASH = "safetyhash";  // Safety hash for DB operations
+const MAX_NUM_CALLS = 4;		// maximum number of calls per user_error
+const MAX_NUM_PLAYERS = 10;		// maxumum number of printed players
 ?>

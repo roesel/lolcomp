@@ -10,6 +10,9 @@ class Group
 	
 	private $errors_player = array();
 	private $existing_players = array();
+	private $overflowed_players = array();
+	private $overflowed_calls = array();
+
     
 	// status returned from call
     private $status;
@@ -45,23 +48,58 @@ class Group
 		// Empty array for sorted summoners
 		$summoners_sorted_array = array();
 		
+		$counter_calls = 0;
+		$counter_players = 0;
+		
 		// Cycle that will go through all summoners and sort them into their regions
 		foreach ($summoners_array as $summoner_and_region) {  // For each summoner
 			$explode = explode(",", $summoner_and_region);  // Explode by "," (separate summoner and region)
 			if (isset($explode[0]) && isset($explode[1])) {
 				// Properly name variables for future use
-				$summoner = strtolower(preg_replace('/\s+/', '', $explode[0])); // remove all whitespace characters and convert to lowercase
+				$summoner = preg_replace('/\s+/', '', $explode[0]); // remove all whitespace characters and convert to lowercase
 				$region = strtolower($explode[1]);
 				
-				// If the player doesn't exist in the database (and data is fresh!)
-				if (!$this->isInDatabase($summoner, $region)) {
+				// check for max number of input players
+				if ($counter_players < MAX_NUM_PLAYERS)
+				{
+					// If the player doesn't exist in the database (and data is fresh!)
+					if (!$this->isInDatabase($summoner, $region)) 
+					{
+						// differentiate between summoners_sorted_array and overflowed_calls
+						if ($counter_calls < MAX_NUM_CALLS)
+						{
+							// If that region does not exist yet, create it
+							if(!isset($summoners_sorted_array[$region]))
+							{
+								$summoners_sorted_array[$region] = array();
+							} 
+							// Push into region (has to exist due to previous if)
+							$summoner = strtolower($summoner);
+							array_push($summoners_sorted_array[$region], $summoner);
+							$counter_calls++;
+						}
+						else
+						{
+							// If that region does not exist yet, create it
+							if(!isset($this->overflowed_calls[$region])) 
+							{
+								$this->overflowed_calls[$region] = array();
+							}
+							// Push into region (has to exist due to previous if)
+							array_push($this->overflowed_calls[$region], $summoner);
+						}
+					}
+					$counter_players++;
+				}
+				else
+				{
 					// If that region does not exist yet, create it
-					if(!isset($summoners_sorted_array[$region])) {
-						$summoners_sorted_array[$region] = array();
-					} 
-					
+					if(!isset($this->overflowed_players[$region])) 
+					{
+						$this->overflowed_players[$region] = array();
+					}
 					// Push into region (has to exist due to previous if)
-					array_push($summoners_sorted_array[$region], $summoner);
+					array_push($this->overflowed_players[$region], $summoner);
 				}
 			}
 		}
@@ -214,6 +252,26 @@ class Group
 				foreach ($region_value as $summoner_name)
 				{
 					$errors = $errors."Failed to find player ".$summoner_name." from region ".$region_name.".<br />";
+				}
+			}
+		}
+		if (count($this->overflowed_calls) != 0)
+		{
+			foreach ($this->overflowed_calls as $region_name => $region_value)
+			{
+				foreach ($region_value as $summoner_name)
+				{
+					$errors = $errors."Player ".$summoner_name." from region ".$region_name." blablabla.<br />";
+				}
+			}
+		}
+		if (count($this->overflowed_players) != 0)
+		{
+			foreach ($this->overflowed_players as $region_name => $region_value)
+			{
+				foreach ($region_value as $summoner_name)
+				{
+					$errors = $errors."Player ".$summoner_name." from region ".$region_name." huehuehue.<br />";
 				}
 			}
 		}

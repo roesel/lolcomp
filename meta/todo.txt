@@ -4,6 +4,7 @@
 - limit number of players (live deploy)
 - example usage and better description for landing page
 - error info (ccs3 overlay box?)
+- add to printer max num of prints
 
 priority 2
 -----------

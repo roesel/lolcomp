@@ -28,8 +28,11 @@ class Printer
 	}
 
 /*-- Static function to print table of parameters ----------------------------*/
-	static function printTable($head,$table)
+	static function printTable($table)
 	{
+		$head = $table[0];		// header of table
+		$body = $table[1];		// body of table
+		
 		// beggining of table
 		print('<table style=\"width:100%\" id="box-table-a">');
 		
@@ -52,7 +55,7 @@ class Printer
 		print("</tr>");
 		
 		// body of table
-		foreach ($table as $row => $names)
+		foreach ($body as $row => $names)
 		{
 			print("<tr>");
 			foreach ($names as $name => $value)
@@ -64,7 +67,7 @@ class Printer
 			}
 			print("</tr>");
 		}
-		print("</table>");
+		print("</body>");
 	}
 	
 /*-- Static function to print ordering of table ------------------------------*/
