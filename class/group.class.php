@@ -261,7 +261,8 @@ class Group
 			{
 				foreach ($region_value as $summoner_name)
 				{
-					$errors = $errors."Player ".$summoner_name." from region ".$region_name." blablabla.<br />";
+					$errors = $errors."We didn't even look for player ".$summoner_name." from region ".$region_name.".<br />
+                                       (You have reached the limit of ".MAX_NUM_CALLS." new players. Try submitting again.)<br/>";
 				}
 			}
 		}
@@ -271,14 +272,15 @@ class Group
 			{
 				foreach ($region_value as $summoner_name)
 				{
-					$errors = $errors."Player ".$summoner_name." from region ".$region_name." huehuehue.<br />";
+					$errors = $errors."We didn't even look for player ".$summoner_name." from region ".$region_name.".<br />
+                                       (You have exceeded the limit of ".MAX_NUM_PLAYERS." total players.)<br/>";
 				}
 			}
 		}
 		return $errors;
 	}
 	
-/*-- Function to print existing palyers --------------------------------------*/
+/*-- Function to print existing players --------------------------------------*/
 	function getExistingPlayers()
 	{
 		return $this->existing_players;

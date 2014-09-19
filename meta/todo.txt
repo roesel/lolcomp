@@ -1,14 +1,12 @@
 ﻿priority 1
 -----------
 - custom fields (win perc. etc) for them
-- limit number of players (live deploy)
+- vypisovat jen nektere sloupečky
 - example usage and better description for landing page
-- error info (ccs3 overlay box?)
 - add to printer max num of prints
 
 priority 2
 -----------
-- vypisovat jen nektere sloupečky
 - add hash saved sets of players -> every request
 - selected hashes should not expire! (LCS player sets, etc)
 

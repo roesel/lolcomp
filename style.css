@@ -202,7 +202,7 @@ border-top: 1px solid #1D1D1D;
 
 div.errorbox {
 	font-size:11px;
-	width:400px;
+	width:500px;
 	margin-top:40px;
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #852F00), color-stop(0.2, #B03E00));
 	background: -moz-gradient(linear, left top, left bottom, color-stop(0, #852F00), color-stop(0.2, #B03E00));
