@@ -14,14 +14,23 @@ class Info
 /*-- Static function to get available tables from database -------------------*/
 	static function getAvailableTables()
 	{
-		$result = dibi::select('table_name, table_comment')
-		   ->from('information_schema.tables')
-		   ->where('table_schema = %s', 'lolscores') 
-		   ->and('table_name')->like('%s', 'stats\_%')
-		   ->or('table_name')->like('%s', 'ranked\_%')
-		   ->execute();
+		// $result = dibi::select('table_name, table_comment')
+		   // ->from('information_schema.tables')
+		   // ->where('table_schema = %s', 'lolscores') 
+		   // ->and('table_name')->like('%s', 'stats\_%')
+		   // ->or('table_name')->like('%s', 'ranked\_%')
+		   // ->execute();
 
-		$result = $result->fetchAll();
+		// $result = $result->fetchAll();
+		
+		// set tables 
+		$result = array(
+			array("table_name" => "stats_general", "table_comment" => "General"), 
+			array("table_name" => "stats_aram_unranked5x5", "table_comment" => "Aram"),
+			array("table_name" => "stats_unranked", "table_comment" => "Unranked"),
+			array("table_name" => "stats_ranked_solo5x5", "table_comment" => "Ranked Solo/Duo"),
+			array("table_name" => "stats_ranked_team5x5", "table_comment" => "Ranked Team 5v5"),
+			);
 		return $result;
 	}
 	
@@ -32,14 +41,51 @@ class Info
 		// header
 		$header = array();
 		
+		// switch ($table["table_name"])
+		// {
+			// case "stats_general":
+			// {
+				// $header = array(
+					// array("COLUMN_COMMENT" => "Summoner name", "COLUMN_NAME" => "summoner_name"), 
+					// array("COLUMN_COMMENT" => "Region", "COLUMN_NAME" => "region"), 
+					// array("COLUMN_COMMENT" => "Placement", "COLUMN_NAME" => "placement"), 
+					// array("COLUMN_COMMENT" => "Level", "COLUMN_NAME" => "summoner_level"), 
+					// array("COLUMN_COMMENT" => "Icon", "COLUMN_NAME" => "profile_icon_id")
+					// );
+				// break;
+			// }
+			// case "stats_aram_unranked5x5":
+			// {
+				// $header = array("Summoner name", "Region", "Placement", "Wins", "Kills", "Assists", "Turrets destroyed", "Minion kills");
+				// break;
+			// }
+			// case "stats_unranked":
+			// {
+				// $header = array("Summoner name", "Region", "Placement", "Wins", "Kills", "Assists", "Turrets destroyed", "Minion kills", "Neutral minions killed");
+				// break;
+			// }
+			// case "stats_ranked_solo5x5":
+			// {
+				// $header = array("Summoner name", "Region", "Placement", "Wins", "Loses", "Win ratio", "Kills", "Assists", "Turrets destroyed", "Minion kills", "Neutral minions killed");
+				// break;
+			// }
+			// case "stats_ranked_team5x5":
+			// {
+				// $header = array("Summoner name", "Region", "Placement", "Wins", "Loses", "Win ratio", "Kills", "Assists", "Turrets destroyed", "Minion kills", "Neutral minions killed");
+				// break;
+			// }
+			// default:
+				// break;
+		// }
+		
 		$res = dibi::select('COLUMN_COMMENT, COLUMN_NAME')
 			->from('information_schema.COLUMNS')
-			->where('(TABLE_NAME = %s AND COLUMN_NAME = %s)', 'general', 'name')
+			->where('(TABLE_NAME = %s AND COLUMN_NAME = %s)', 'general', 'summoner_name')
 			->or('(TABLE_NAME = %s AND COLUMN_NAME = %s)', 'general', 'id')
 			->or('(TABLE_NAME = %s)', $table)
 			->execute();
 		$header = $res->fetchAll();
-		
+
 		// Changing header so that it fits the JOINed select
 		$header[1]['COLUMN_COMMENT'] = 'Summoner name';  
 		$header[1]['COLUMN_NAME']    = 'summoner_name';
