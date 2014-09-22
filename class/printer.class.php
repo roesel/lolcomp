@@ -133,7 +133,7 @@ Alliance Wickd, kr<br/>
         </div>
 		<div id="examples-info">
 			<h2>Things to know:</h2>
-				<p>This site is a work in progress. Please report any mistakes, ideas and/or errors to the <a href="#">reddit thread</a>.</p>
+				<p>This site is a work in progress. Please report any mistakes, ideas and/or errors to the <a href="http://redd.it/2h3afq">reddit thread</a>.</p>
 				<p>Due to possible reddit hugs, this site can be unavailable. Sorry about that.</p>
 				<p>The maximum amount of players you can view is '.MAX_NUM_PLAYERS.'.</p>
 				<p>The maximum of new (not cached) players you can add per reload is '.MAX_NUM_CALLS.'.</p>
