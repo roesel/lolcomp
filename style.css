@@ -8,13 +8,16 @@ body {
     color: #777;
 }
     body * {
-        margin: 10px;
         padding: 0px;
         font-family: helvetica, sans-serif;
     }
 p {
     margin: 0 0 1em;
     font-size: 14px;
+}
+
+div#form  form * {
+margin:10px;
 }
 input,
 textarea,
@@ -213,11 +216,35 @@ div.errorbox {
 	border-radius: 6px 6px 6px 6px;
 	padding:10px;
 }
-
+div#example-wrapper {
+	height:404px;
+	width:100%;
+	margin-top:-20px;
+	padding:0px;
+}
 div#examples {
-    height:384px;
+	float:left;
+	height:384px;
+	width:250px;
+}
+
+div#examples-info {
+	float:left;
+	width:450px;
 }
 
 div#examples p {
     padding-left:20px;
+}
+div#footer {
+	float:left;
+	text-align:center;
+	width:100%;
+	margin-top:30px;
+}
+
+div#footer  p{
+	font-size:0.7em;
+	color:gray;
+	line-height:0.4em;
 }

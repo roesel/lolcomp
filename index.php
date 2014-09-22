@@ -34,7 +34,7 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 
 </script>
 <body style="background:url(img/background.jpg);color:white;">
-	<div id="wrapper" style="width:1700px;text-align:left;margin-left:10px;margin-right:auto;">
+	<div id="wrapper" style="width:1700px;text-align:left;margin-left:10px;margin-right:auto;margin-top:20px;">
 		<div id="form" style="float:left;width:300px;margin-left:20px;">
 			<form action="./<?php Printer::printGetParameters(); ?>" method="post">
 			<a href="<?php print(WEB_ROOT);?>"><img src="img/logo.png" style="width:220px;margin-top:-20px;margin-left:-8px;" /></a>
@@ -53,6 +53,7 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 			</select>
 			<br/><input type="submit" value="Submit" style="">
 			</form>
+			
 		</div>
 		<?php
 		/*-- Create table of players, according to chosen type of game ---------------*/
@@ -87,10 +88,16 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 			{
 				Printer::printIntro();
 			}
+			
 				
+			
+			
 			print('</div>');
 			
 		?>
-	</div>
+			
+	</div><?php
+			Printer::printFooter();
+			?>
 </body>
 </html>
