@@ -34,8 +34,8 @@ if (isset($_GET["orderby"]) && isset($_GET["way"]))
 
 </script>
 <body style="background:url(img/background.jpg);color:white;">
-	<div id="wrapper" style="width:1700px;text-align:left;margin-left:auto;margin-right:auto;">
-		<div id="form" style="float:left;width:300px;margin-left:150px;">
+	<div id="wrapper" style="width:1700px;text-align:left;margin-left:10px;margin-right:auto;">
+		<div id="form" style="float:left;width:300px;margin-left:20px;">
 			<form action="./<?php Printer::printGetParameters(); ?>" method="post">
 			<a href="<?php print(WEB_ROOT);?>"><img src="img/logo.png" style="width:220px;margin-top:-20px;margin-left:-8px;" /></a>
 			<!--<p style="text-align:center;color:gray;font-size:0.8em;"><?php Printer::printVersion(); ?></p>-->

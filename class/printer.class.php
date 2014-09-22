@@ -91,9 +91,7 @@ class Printer
 			print($_SESSION["players"]);
 		} else 
 		{
-			print("TSM Bjergsen, na
-Torrda, eune
-Chalcedony, eune");
+			print("");
 		}
 	}
 	
@@ -107,7 +105,32 @@ Chalcedony, eune");
 		print('
 		<h1>How to start:</h1>
 		<h3 style="margin-top:85px;margin-left:-50px;">&larr; 1. Input yourself and a few of your friends.</h3>
-		<h3 style="margin-top:400px;margin-left:-50px;">&larr; 2. Select the type of statistics you\'d like to compare.</h3>
+        <div id="examples">
+            <h2>For example:</h2>
+                <p>
+SKT T1 Faker, kr<br/>
+KvotheKelsier, kr<br/>
+Fnatic xMid, kr<br/>
+S4WC FNC Rekkles, kr<br/>
+EunjiSuzy, kr<br/>
+Alliance Froggen, kr<br/>
+YuNg TuRtLe, kr<br/>
+C9 Sneaker, kr<br/>
+Ding12, kr<br/>
+Faded Sound, kr<br/>
+MMMMMMor, kr<br/>
+Alliance Nyph, kr<br/>
+ice cold water, kr<br/>
+Alliance Shook, kr<br/>
+넌나한태오빠야, kr<br/>
+WOW 150 PING, kr<br/>
+roro1, kr<br/>
+SK Jungler, kr<br/>
+SK Jesiz, kr<br/>
+Alliance Wickd, kr<br/>
+                </p>
+        </div>
+		<h3 style="margin-left:-50px;">&larr; 2. Select the type of statistics you\'d like to compare.</h3>
 		<h3 style="margin-top:35px;margin-left:-190px;">&larr; 3. Hit "Submit" and give us a few seconds.</h3>
 		');
 	}

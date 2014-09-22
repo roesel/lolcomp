@@ -213,3 +213,11 @@ div.errorbox {
 	border-radius: 6px 6px 6px 6px;
 	padding:10px;
 }
+
+div#examples {
+    height:384px;
+}
+
+div#examples p {
+    padding-left:20px;
+}
