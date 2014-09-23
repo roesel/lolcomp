@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `ranked_stats` (
   `id` int(255) NOT NULL DEFAULT '0' COMMENT 'Summoner ID',
   `region` varchar(50) COLLATE utf8_czech_ci NOT NULL DEFAULT '0' COMMENT 'Region',
   `total_sessions_won` int(255) NOT NULL DEFAULT '0' COMMENT 'Wins',
-  `win_ratio` int(255) NOT NULL DEFAULT '0' COMMENT 'KDA',
+  `win_ratio` int(255) NOT NULL DEFAULT '0' COMMENT 'Win %',
   `total_sessions_lost` int(255) NOT NULL DEFAULT '0' COMMENT 'Loses',
   `total_assists` int(255) NOT NULL DEFAULT '0' COMMENT 'Assists',
   `total_champion_kills` int(255) NOT NULL DEFAULT '0' COMMENT 'Champion kills',
