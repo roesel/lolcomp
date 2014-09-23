@@ -58,9 +58,19 @@ class Printer
 		foreach ($body as $row => $names)
 		{
 			print("<tr>");
+            $summoner_name = $names['summoner_name'];
+            $region = $names['region'];
 			foreach ($names as $name => $value)
 			{
-				if (($name != 'id') && ($name != 'id_general'))
+				if ($name == 'summoner_name') {
+                    if ($names['region']=='kr') {
+                        $region_op_gg='';
+                    } else {
+                        $region_op_gg = $names['region'].'.';
+                    }
+                    print('<td><a href="http://'.$region_op_gg.'op.gg/summoner/userName='.$value.'">'.$value.'</a></td>');
+                }
+                elseif (($name != 'id') && ($name != 'id_general') && ($name != 'summoner_name'))
 				{
 					print("<td>".$value."</td>");
 				}
@@ -112,7 +122,6 @@ class Printer
 SKT T1 Faker, kr<br/>
 KvotheKelsier, kr<br/>
 Fnatic xMid, kr<br/>
-S4WC FNC Rekkles, kr<br/>
 EunjiSuzy, kr<br/>
 Alliance Froggen, kr<br/>
 YuNg TuRtLe, kr<br/>
