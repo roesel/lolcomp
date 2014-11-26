@@ -1,4 +1,4 @@
 lolcomp
 =======
 
-LoLCompare alpha
+lolscores repository
